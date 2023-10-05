@@ -1,0 +1,11 @@
+# @package _global_
+
+defaults:
+  - image_hand_base
+
+net:
+  state:
+    feature:
+      depth:
+        partial_ft: true
+model_name: 'image_hand_gru_v7'

@@ -1,0 +1,30 @@
+# @package _global_
+defaults:
+  - hand_wall_pose
+
+add_prev_wrench: true
+add_object_mass: true
+
+use_tune_goal_angle: false
+
+env:
+  action_period : 5
+  single_object_scene:
+    diverse_object: false
+    # load bbox for keypoint-based reward
+    load_bbox: true
+    goal_type: 'cuboid'
+    use_wall: false
+    default_mesh: 'RubiksCube_d7d3dc14748ec6d347cd142fcccd1cc2_8.634340549903529e-05.glb'
+  fe_gripper:
+    ctrl_mode: position
+  task:
+    succ_coef: 10.0
+    pot_coef: 0.1
+    hand_obj_pot_coef: 0.05
+    use_potential: true
+    use_keypoint: true
+    goal_type: 'cuboid'
+use_tune_goal_speed: false
+use_tune_goal_radius: false
+env_name: 'hand_nowall_pose_cube_state'

@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - hand_wall_pose_embs
+env:
+  single_object_scene:
+    object_set: [Chair]
+  fe_gripper:
+    ctrl_mode: wrench
+env_name: 'hand_wall_pose_embs_wrench_chair'

@@ -1,0 +1,23 @@
+# @package _global_
+defaults:
+  - hand_wall_pose
+
+use_camera: false
+remove_img: true
+camera:
+  use_cloud: false
+  object_id: 2
+  cloud_size: 512
+  cloud_type: 'object'
+env:
+  single_object_scene:
+    load_cloud: true
+add_object_full_cloud: true
+add_object_mass: true
+use_tune_goal_angle: true
+tune_goal_angle:
+  _target_: pkm.env.env.wrap.adaptive_domain_tuner.MultiplyScalarAdaptiveDomainTuner.Config
+  step: 0.95
+  easy: 3.14
+  hard: 0.05
+env_name: 'hand_wall_pose_full_cloud'

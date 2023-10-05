@@ -1,0 +1,42 @@
+# @package _global_
+
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/noop@net.state.feature.cube_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/feature/image_vit_from_mae@net.state.feature.img
+  - ../net/aggregator/noop@net.state.aggregator.state
+  - ../net/aggregator/noop@net.state.aggregator.cube_state
+  - ../net/aggregator/noop@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.img
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  - ../net/state/noop@net.state.state
+  - ../net/fuser/cat@net.state.fuser
+
+use_camera: true
+img_size: 48
+remove_state: true
+env:
+  num_env: 64
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 1
+  bptt_burn_in: 0
+  bptt_stride: 1
+net:
+  policy:
+    actor:
+      dim_hidden: [64]
+    value:
+      dim_hidden: [64]
+  state:
+    feature:
+      img:
+        train_emb_token: false
+# net:
+#   state:
+#     state:
+#       dim_obs: [6]
+#       dim_out: 6

@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - arm_pose_speaker_state_crm_no_cur_v2
+
+env:
+  single_object_scene:
+    data_root: '/input/egad/egad_sim/urdf/'
+    hull_root: '/input/egad/egad_sim/hull/'
+    mesh_count: '/input/egad/egad_sim/mesh_count.json'
+    urdf_stats_file: '/input/egad/egad_sim/urdf_stats.json'
+    stable_poses_file: '/input/egad/egad_sim/stable_poses.pkl'
+    embeddings_file: '/input/egad/egad_sim/embedding.pkl'
+    bbox_file: '/input/egad/egad_sim/bbox.pkl'
+    cloud_file: '/input/egad/egad_sim/cloud.pkl'
+    stable_poses_url: null
+    embeddings_url: null
+    bbox_url: null
+    cloud_url: null

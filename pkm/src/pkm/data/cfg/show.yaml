@@ -1,0 +1,22 @@
+defaults:
+  - train_rl
+
+use_wandb: False
+env:
+  use_viewer: True
+  draw_task_goal: True
+  draw_obj_pos_2d: False
+  draw_force: False
+  draw_obj_vel: False
+
+  task:
+    max_speed: 0.1
+
+  num_env: 16
+  env_margin_scale: 1.0
+  env_margin: 0.0
+
+
+agent:
+  train:
+    train_steps: 0

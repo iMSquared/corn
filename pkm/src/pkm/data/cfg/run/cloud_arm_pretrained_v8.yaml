@@ -1,0 +1,30 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_mlp_base
+  - ../net/feature/noop@net.state.feature.cloud
+  - ../net/feature/noop@net.state.feature.goal
+  - ../net/feature/sd_cross@net.state.feature.icp_emb
+  - ../net/aggregator/noop@net.state.aggregator.icp_emb
+
+net:
+  state:
+    feature:
+      icp_emb:
+        dim_in: [17, 128]  # cloud size
+        dim_out: 1024
+        cat_query: True
+        query_keys: ['goal', 'previous_action', 'robot_state']
+        num_query: 4
+        ctx_dim: 41 # 7+20+14+3
+        emb_dim: 128
+    fuser:
+      keys: ['icp_emb']
+      mlp:
+        dim_hidden: [512]
+    state:
+      dim_hidden: []
+
+
+
+model_name: 'cloud_arm_pretrained_v8'

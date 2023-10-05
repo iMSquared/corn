@@ -1,0 +1,11 @@
+# @package _global_
+
+defaults:
+  - hand
+env:
+  single_object_scene:
+    use_wall: true
+    table_file: 'table-with-wall/table-with-wall-open.urdf'
+  task:
+    use_cliff: true
+env_name: 'hand_cliff'

@@ -1,0 +1,5 @@
+# @package _global_
+defaults:
+  - vit/lite@model
+
+img_size: 48

@@ -1,0 +1,5 @@
+# @package _global_
+
+defaults:
+  - image_mwm_pretrained_multi_object_gru
+  - ../net/feature/noop@net.state.feature.cube_state

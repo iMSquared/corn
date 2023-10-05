@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+    - arm_div_cloud_rma_v1
+  
+env:
+  single_object_scene:
+    use_wall: False
+    min_mass: 0.2
+    max_mass: 1.0
+    use_dr: True
+    use_dr_on_setup: True
+  franka:
+    add_control_noise: True
+    max_pos: 0.02
+    max_ori: 0.03
+
+is_phase2: true
+  
+env_name: 'arm_div_cloud_rma_v2'
+  

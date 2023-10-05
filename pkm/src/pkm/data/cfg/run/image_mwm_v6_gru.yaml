@@ -1,0 +1,18 @@
+# @package _global_
+
+defaults:
+  - image_mae_ss
+  - ../net/aggregator/gru@net.state.aggregator.depth
+  - ../net/feature/image_mwm_v6@net.state.feature.depth
+
+use_camera: true
+img_size: 64
+remove_state: true
+env:
+  num_env: 128
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1

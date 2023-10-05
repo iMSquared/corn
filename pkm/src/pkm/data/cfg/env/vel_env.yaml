@@ -1,0 +1,7 @@
+# @package _global_
+task:
+    max_speed: 2.0
+    check_stable: true
+    timeout: 512
+num_enr: 1024
+env_name: 'vel_env'

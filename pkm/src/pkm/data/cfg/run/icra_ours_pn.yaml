@@ -1,0 +1,30 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_mlp_base
+  - ../net/feature/noop@net.state.feature.cloud
+  - ../net/feature/noop@net.state.feature.goal
+  - ../net/feature/noop@net.state.feature.pn_emb
+  - ../net/aggregator/noop@net.state.aggregator.pn_emb
+
+use_pn_obs: true
+
+pn_obs:
+  pn:
+    keys:
+      hand_state: 9
+  ckpt: 'corn/corn-/col-pn:long-train-fix-aug-000000'
+      
+
+net:
+  state:
+    fuser:
+      keys: ['pn_emb', 'goal', 'previous_action', 'robot_state', 'phys_params']
+      mlp:
+        dim_hidden: [512]
+    state:
+      dim_hidden: []
+
+
+
+model_name: 'icra_ours_pn'

@@ -1,0 +1,54 @@
+# @package _global_
+
+defaults:
+  - arm_div_cloud
+
+env:
+  num_env: 4096
+  franka:
+    base_height: table
+    obj_margin: 0.2
+    init_type: box_sample
+    regularize: energy
+  single_object_scene:
+    use_wall: false
+    load_convex: false
+    filter_dims: null
+    base_set: ['cuboid']
+    filter_file: null
+    cuboid:
+      min_dim: 0.09
+      max_dim: 0.09
+      max_aspect: null
+    use_dr_on_setup: true
+    min_mass: 0.2
+    max_mass: 0.5
+  task:
+    gamma: 0.995
+    sample_thresh: [1.0, 1.0]
+    margin_scale: 0.8
+    regularize_coef: 0.01
+    timeout: 300
+  object_state_type: pose_vel
+  hand_state_type: pose
+
+
+add_goal_thresh: false
+add_goal_full_cloud: false
+use_rel_goal: true
+use_tune_goal_radius: false
+add_object_mass: true
+
+use_camera: false
+normalize_img: false
+
+normalizer:
+  norm:
+    constlist: ['hand_state', 'cloud']
+    stats:
+      hand_state: [[ 0.0, 0.0, 0.55, 0.0, 0.0, 0.0, 0.0 ],[ 0.4, 0.4, 0.4, 1.0, 1.0, 1.0, 1.0 ]]
+      cloud: [[0.0, 0.0, 0.55 ],[ 0.4, 0.4, 0.4 ]]
+  obs_shape:
+    goal: [7]
+
+env_name: 'arm_div_cloud_v8_cube'

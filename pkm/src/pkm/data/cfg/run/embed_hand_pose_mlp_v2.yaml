@@ -1,0 +1,34 @@
+# @package _global_
+# Full state + Mass, mlp
+defaults:
+  - embed_hand_pose_mlp_base.yaml
+
+agent:
+  tanh_xfm: false
+  train:
+    loss:
+      k_bound: 0.02
+      k_val: 2.0
+
+net:
+  state:
+    feature:
+      cross:
+        num_emb_token: 1
+    fuser:
+      dim_out: 256
+      mlp:
+        dim_hidden: [512]
+        dim_out: 256
+    state:
+      dim_hidden: [256]
+      dim_out: 128
+  policy:
+    actor:
+      dim_hidden: []
+    value:
+      dim_hidden: []
+
+
+
+model_name: 'embed_hand_pose_mlp_v2'

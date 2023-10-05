@@ -1,0 +1,38 @@
+# @package _global_
+
+defaults:
+  - image_vit_from_mae_with_noop_state
+
+net:
+  policy:
+    actor:
+      dim_hidden: [64]
+    value:
+      dim_hidden: [64]
+  state:
+    feature:
+      img:
+        dim_out: 128
+        vit:
+          patch_size: 8
+          hidden_size: 128
+          intermediate_size: 128
+          num_attention_heads: 4
+          num_hidden_layers: 3
+        # desktop only
+        ckpt: '/tmp/pkm/mae/run-108/ckpt/last.ckpt'
+
+agent:
+  train:
+    use_amp: true
+
+        
+
+env:
+  task:
+    check_stable: true
+    anneal_steps: 500000
+    max_speed: 8.0
+  num_env:
+    1024
+

@@ -1,0 +1,23 @@
+# @package _global_
+#
+defaults:
+  - image_hand_mlp_v5
+
+net:
+  policy:
+    actor:
+      dim_hidden: [64]
+    value:
+      dim_hidden: [64]
+  state:
+    fuser:
+      mlp:
+        use_bn: false
+        use_ln: true
+        act_cls: 'elu'
+    state:
+      use_bn: false
+      use_ln: true
+      act_cls: 'elu'
+
+model_name: 'image_hand_mlp_v6'

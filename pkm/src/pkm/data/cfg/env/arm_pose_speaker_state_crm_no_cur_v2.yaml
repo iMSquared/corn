@@ -1,0 +1,32 @@
+# @package _global_
+defaults:
+  - arm_pose_speaker_state_crm_no_cur
+
+use_tune_goal_angle: false
+use_tune_goal_speed: false
+use_tune_goal_radius: false
+
+env:
+  single_object_scene:
+    use_wall: false
+    table_friction: 0.5
+    object_friction: 0.5
+    load_bbox: true
+  franka:
+    lock_orn: true
+    regularize: energy
+    VISCOUS_FRICTION: 0.2
+    obj_margin: 0.25
+  task:
+    use_potential: false
+    pot_coef: 0.16
+    epsilon: 0.02
+    planar: false
+    regularize_coef: 0.0000001
+    contact_thresh: 0.0
+    check_stable: false
+    goal_angle: 0.3
+    margin_scale: 0.9
+    sample_thresh: [1.0, 1.0]
+  action_period: 2
+env_name: 'arm_pose_speaker_state_crm_no_cur_v2'

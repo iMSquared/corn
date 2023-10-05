@@ -1,0 +1,13 @@
+# @package _global_
+defaults:
+  - hand_wall_pose_embs_pos_chair_mass
+add_touch_count: true
+state_net_blocklist: ['object_state','touch','touch_count']
+agent:
+  use_her: true
+# Bye bye curriculum!
+use_tune_goal_angle: false
+use_tune_goal_speed: false
+use_tune_goal_radius: false
+
+env_name: 'hand_wall_pose_embs_pos_chair_mass_her'

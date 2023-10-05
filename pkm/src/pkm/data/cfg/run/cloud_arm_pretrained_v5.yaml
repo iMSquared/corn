@@ -1,0 +1,13 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_pretrained_v1
+
+net:
+  state:
+    feature:
+      cloud:
+        query_keys: ['goal', 'previous_action', 'robot_state', 'object_mass']
+        ctx_dim: 42 # 7+20+14+3
+
+model_name: 'cloud_arm_pretrained_v5'

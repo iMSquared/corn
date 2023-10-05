@@ -1,0 +1,18 @@
+# @package _global_
+
+defaults:
+  - arm_div_cloud_v5_dgn
+
+env:
+  single_object_scene:
+    use_wall: False
+    min_mass: 0.2
+    max_mass: 1.0
+    use_dr: True
+    use_dr_on_setup: True
+  franka:
+    add_control_noise: True
+
+is_phase2: true
+
+env_name: 'arm_div_cloud_v5_dgn_phase2'

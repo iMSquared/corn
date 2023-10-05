@@ -1,0 +1,6 @@
+# @package _global_
+use_camera: false
+remove_state: false
+remove_velocity: true
+env:
+  num_env: 4096

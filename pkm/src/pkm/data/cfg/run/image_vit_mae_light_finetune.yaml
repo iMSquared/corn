@@ -1,0 +1,15 @@
+# @package _global_
+
+defaults:
+  - image_vit_mae_light
+
+net:
+  state:
+    feature:
+      img:
+        # NOTE: freeze overall net, and only train the emb. token
+        freeze: true
+        train_emb_token: true
+
+env:
+  num_env: 512

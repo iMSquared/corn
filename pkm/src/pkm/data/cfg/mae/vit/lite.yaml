@@ -1,0 +1,18 @@
+# Patchify
+patch_size: 8
+encoder_stride: 8
+
+# Encoder
+hidden_size: 128
+intermediate_size: 128
+num_attention_heads: 4
+num_hidden_layers: 3
+
+# Decoder
+decoder_hidden_size: 128
+decoder_intermediate_size: 128
+decoder_num_attention_heads: 4
+decoder_num_hidden_layers: 3
+
+# MAE Loss
+norm_pix_loss: False

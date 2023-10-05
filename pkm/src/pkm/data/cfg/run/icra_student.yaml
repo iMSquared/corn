@@ -1,0 +1,19 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_mlp_base
+  - ../net/feature/noop@net.state.feature.student_state
+  - ../net/aggregator/noop@net.state.aggregator.student_state
+
+net:
+  state:
+    fuser:
+      keys: ['student_state']
+      mlp:
+        dim_hidden: [512]
+    state:
+      dim_hidden: []
+
+
+
+model_name: 'icra_student'

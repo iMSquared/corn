@@ -1,0 +1,15 @@
+# @package _global_
+
+defaults:
+  - hand
+env:
+  single_object_scene:
+    use_wall: true
+    table_file: 'table-with-wall/table-with-wall-open.urdf'
+    table_friction: 0.4
+    object_friction: 0.4
+  task:
+    use_cliff: true
+    ws_margin: 0.3
+use_tabulate: false
+env_name: 'hand_cliff_v2'

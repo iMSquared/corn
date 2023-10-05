@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - hand_wall_pose
+env:
+  single_object_scene:
+    load_embedding: true
+    diverse_object: true
+add_object_embedding: true
+env_name: 'hand_wall_pose_embs'

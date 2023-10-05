@@ -1,0 +1,14 @@
+# @package _global_
+# Student encoder trained by RMA with 6d goal
+
+defaults:
+  - rma_gru_student_base
+
+student: 
+  shapes:
+    goal: 9
+    hand_state: 9
+  pose_dim: 9
+
+
+model_name: 'rma_gru_student_6d_goal'

@@ -1,0 +1,16 @@
+# @package _global_
+#
+defaults:
+  - image_hand_mlp_v2
+
+net:
+  state:
+    fuser:
+      mlp:
+        use_bn: true
+        act_cls: 'lrelu'
+    state:
+      use_bn: true
+      act_cls: 'lrelu'
+
+model_name: 'image_hand_mlp_v3'

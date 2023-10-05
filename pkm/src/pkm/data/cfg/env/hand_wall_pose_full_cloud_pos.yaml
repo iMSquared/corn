@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - hand_wall_pose_full_cloud
+add_prev_wrench: false
+env:
+  action_period : 5
+  single_object_scene:
+    object_set: [Chair]
+  fe_gripper:
+    ctrl_mode: position
+    max_ori: 0.05
+    KP_pos: 300.0
+  task:
+    succ_coef: 100.0
+    pot_coef: 5.0
+    hand_obj_pot_coef: 1.0
+    use_potential: false
+env_name: 'hand_wall_pose_full_cloud_pos'

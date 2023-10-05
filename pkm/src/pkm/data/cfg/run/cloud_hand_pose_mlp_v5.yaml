@@ -1,0 +1,42 @@
+# @package _global_
+# Full state + Mass, mlp
+defaults:
+  - cloud_hand_pose_mlp_base.yaml
+  - ../net/feature/flat_mlp@net.state.feature.cloud
+  - ../net/feature/flat_mlp@net.state.feature.goal
+
+agent:
+  tanh_xfm: false
+  train:
+    loss:
+      k_bound: 0.02
+      k_val: 2.0
+
+net:
+  state:
+    feature:
+      cloud:
+        dim_in: [512, 3]
+        dim_hidden: [256]
+        dim_out: 128
+      goal:
+        dim_in: [512, 3]
+        dim_hidden: [256]
+        dim_out: 128
+    fuser:
+      dim_out: 256
+      mlp:
+        dim_hidden: [512]
+        dim_out: 256
+    state:
+      dim_hidden: [256]
+      dim_out: 128
+  policy:
+    actor:
+      dim_hidden: []
+    value:
+      dim_hidden: []
+
+
+
+model_name: 'cloud_hand_pose_mlp_v5'

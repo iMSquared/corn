@@ -1,0 +1,27 @@
+# @package _global_
+
+defaults:
+  - image_hand_base
+  - ../net/feature/image_mwm_v11@net.state.feature.depth
+
+net:
+  state:
+    feature:
+      depth:
+        partial_ft: false
+        ckpt: 'corn/corn-/mae:corn-/mwm-64-v11-flash-attn'
+        embed_type: 'new_query'
+        num_emb_head: 4
+    fuser:
+      dim_out: 128
+      mlp:
+        dim_out: 128
+    state:
+      dim_out: 128
+
+agent:
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1
+
+model_name: 'image_hand_gru_v16'

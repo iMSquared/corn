@@ -1,0 +1,29 @@
+# @package _global_
+
+defaults:
+  - arm_pose_speaker_state
+
+add_touch_count: true
+add_success: true
+state_net_blocklist: ['touch','touch_count', 'success']
+
+use_tune_goal_radius: false
+use_tune_goal_speed: false
+use_tune_goal_angle: false
+
+env:
+  task:
+    sparse_reward: true
+    goal_angle: 0.3
+
+normalizer:
+  norm:
+    normalize_rew: false
+
+agent:
+  use_her: true
+  train:
+    burn_in: 0
+    rollout_size: 8
+
+env_name: 'arm_pose_speaker_state_her'

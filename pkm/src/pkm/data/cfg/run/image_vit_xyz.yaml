@@ -1,0 +1,26 @@
+# @package _global_
+
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/noop@net.state.feature.cube_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/feature/image_vit_xyz@net.state.feature.img
+  - ../net/aggregator/noop@net.state.aggregator.state
+  - ../net/aggregator/noop@net.state.aggregator.cube_state
+  - ../net/aggregator/gru@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.img
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  - ../net/state/mlp@net.state.state
+
+use_camera: true
+img_size: 48
+remove_state: true
+env:
+  num_env: 256
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 1
+  bptt_burn_in: 0
+  bptt_stride: 1

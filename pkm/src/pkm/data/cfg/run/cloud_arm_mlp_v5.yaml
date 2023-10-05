@@ -1,0 +1,32 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_mlp_base
+  - ../net/feature/noop@net.state.feature.goal
+  - ../net/feature/point_patch_v4@net.state.feature.cloud
+
+net:
+  state:
+    feature:
+      cloud:
+        patch_size: 32
+        token_size: 128
+        pw_attn:
+          dim_in: [16, 128]
+          dim_out: 256
+          num_query: 1
+          ctx_dim: 57 # 7+13+13+20+14+3
+          emb_dim: 128
+          encoder:
+            num_hidden_layers: 2
+            layer:
+              hidden_size: 128
+          keys: ['goal', 'hand_state', 'previous_action', 'robot_state', 'goal_thresh']
+    fuser:
+      keys: ['cloud']
+      mlp:
+        dim_hidden: []
+    state:
+      dim_hidden: []
+
+model_name: 'cloud_arm_mlp_v5'

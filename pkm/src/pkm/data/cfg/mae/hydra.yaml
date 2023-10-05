@@ -1,0 +1,57 @@
+defaults:
+  # - env: vel_env
+  # - agent: rppov4
+  # - net/state@net.state
+  # - net/policy@net.policy
+  # Disable hydra logs
+  # - vit/lite@model
+  #- vit/mwm-lite@model
+  # - vit/mae_ss-lite@model
+  # - vit/mae_ss-tiny@model
+  # - vit/mae_ss-nano-v2@model
+  # - vit/mae_ss-obj@model
+  # - vit/mwm_ss-scene@model
+  # - vit/mwm-scene-remove-table@model
+  # - vit/mwm-scene-v8@model
+  # - vit/mwm-scene-v8@model
+  # - vit/mae-scene-v9@model
+  # - vit/mae-scene-v10@model
+  # - vit/mae-scene-v10@model
+  - vit/mwm-scene-v11@model
+  # - vit/mwm-scene-v12@model
+  - override hydra/hydra_logging: disabled  
+  - override hydra/job_logging: disabled  
+
+# Disable hydra logs
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+shuffle: true
+num_workers: 16
+pin_memory: false
+
+img_mean: [0.4, 0.0]
+img_std: [0.2, 1.0]
+# img_size: 48
+# img_size: 56
+img_size: 64
+# img_size: 80
+# img_size: 128
+
+num_epoch: 20
+batch_size: 1024
+learning_rate: 0.00015
+weight_decay: 0.05
+
+model:
+  norm_pix_loss: false
+with_coord: false
+
+path:
+  root: '/tmp/pkm/mae'
+
+save_period: 1
+log_period: 64
+use_amp: true

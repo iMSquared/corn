@@ -1,0 +1,27 @@
+# @package _global_
+
+defaults:
+  - arm_div_base
+
+add_object_embedding: true
+env:
+  single_object_scene:
+    data_root: '/input/ACRONYM/rot3/urdf'
+    hull_root: '/input/ACRONYM/rot3/hull'
+    mesh_count: '/input/ACRONYM/mesh_count.json'
+    urdf_stats_file: '/input/ACRONYM/urdf_stats.json'
+    stable_poses_file: '/input/ACRONYM/rot3/stable_poses_filtered.pkl'
+    embeddings_file: '/input/ACRONYM/rot3/embed-v17.pkl'
+    patch_center_file: '/input/ACRONYM/rot3/patch-v17.pkl'
+    bbox_file: '/input/ACRONYM/rot3/bbox.pkl'
+    cloud_file: '/input/ACRONYM/rot3/cloud.pkl'
+    override_inertia: true
+    load_embedding: true
+
+normalizer:
+  norm:
+    constlist: []
+  obs_shape:
+    object_embedding: [256]
+
+env_name: 'arm_div_emb_rot3'

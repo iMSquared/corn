@@ -1,0 +1,39 @@
+# @package _global_
+# Full state + Mass, mlp
+defaults:
+  - embed_hand_pose_mlp_base.yaml
+  - ../net/feature/sd_cross@net.state.feature.object_embedding
+
+agent:
+  tanh_xfm: false
+  train:
+    loss:
+      k_bound: 0.02
+      k_val: 2.0
+
+net:
+  state:
+    feature:
+      object_embedding:
+        dim_in: [20]
+        num_query: 1
+        emb_dim: 16 # slightly overparameterized, >= log2(20)
+        dim_out: 16
+        keys: ['goal', 'hand_state', 'object_state', 'previous_action', 'robot_state']
+        ctx_dim: 67 # 7+13+13+20+14
+    fuser:
+      dim_out: 256
+      mlp:
+        dim_hidden: [512]
+        dim_out: 256
+    state:
+      dim_hidden: [256]
+      dim_out: 128
+  policy:
+    actor:
+      dim_hidden: []
+    value:
+      dim_hidden: []
+
+
+model_name: 'embed_hand_pose_mlp_v8'

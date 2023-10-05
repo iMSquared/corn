@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - hand_wall_pose_full_cloud
+env:
+  single_object_scene:
+    object_set: [Chair]
+    load_bbox: true
+  fe_gripper:
+    ctrl_mode: wrench
+  action_period: 1
+add_prev_wrench: True
+
+  
+env_name: 'hand_wall_pose_full_cloud_pos'

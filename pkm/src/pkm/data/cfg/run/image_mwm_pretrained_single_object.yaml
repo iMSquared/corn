@@ -1,0 +1,19 @@
+# @package _global_
+
+defaults:
+  - image_mwm_pretrained
+
+env:
+  task:
+    check_stable: true
+    anneal_steps: 75000
+    succ_coef: 100.0
+    timeout: 256
+  single_object_scene:
+    multi_object: false
+    single_object: true
+  dt: 0.02
+
+agent:
+  train:
+    train_steps: 100000

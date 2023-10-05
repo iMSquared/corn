@@ -1,0 +1,5 @@
+# @package _global_
+
+defaults:
+  - image_vit_from_mae
+  - ../net/feature/image_mwm@net.state.feature.img

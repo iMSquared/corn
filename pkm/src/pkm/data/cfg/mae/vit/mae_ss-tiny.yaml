@@ -1,0 +1,11 @@
+defaults:
+  - mae_ss-lite
+
+dim_in: [1,56,56]
+
+encoder:
+  image_size: 14
+  patch_size: 1
+decoder:
+  image_size: 14
+  patch_size: 1

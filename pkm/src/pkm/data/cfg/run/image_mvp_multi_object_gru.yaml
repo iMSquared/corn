@@ -1,0 +1,25 @@
+# @package _global_
+#
+defaults:
+  - image_mvp
+  - ../net/aggregator/gru@net.state.aggregator.color
+
+env:
+  task:
+    check_stable: true
+    anneal_steps: 75000
+    succ_coef: 100.0
+    timeout: 256
+  single_object_scene:
+    multi_object: true
+    single_object: false
+  dt: 0.02
+
+agent:
+  train:
+    train_steps: 100000
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1

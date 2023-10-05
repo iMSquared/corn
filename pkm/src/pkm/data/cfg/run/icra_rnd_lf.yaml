@@ -1,0 +1,20 @@
+# @package _global_
+
+defaults:
+  - icra_rnd
+
+icp_obs:
+  icp:
+    keys: {}
+    ckpt: null
+
+net:
+  state:
+    feature:
+      icp_emb:
+        dim_in: [16, 128]
+        dim_out: 2105
+        query_keys: ['goal', 'previous_action', 'robot_state', 'phys_params', 'hand_state']
+        ctx_dim: 57 # 9+20+14+5+9
+
+model_name: 'icra_rnd_lf'

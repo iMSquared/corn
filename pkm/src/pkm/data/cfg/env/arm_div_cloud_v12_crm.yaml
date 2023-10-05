@@ -1,0 +1,44 @@
+# @package _global_
+
+defaults:
+  - arm_div_cloud
+
+env:
+  num_env: 4096
+  franka:
+    base_height: table
+    obj_margin: 0.2
+  single_object_scene:
+    use_wall: false
+    load_convex: false
+    filter_dims: [0.0899, 0.0901, 1.01] 
+    filter_pose_count: null
+    base_set: ['cuboid']
+    cuboid:
+      num_types:  1
+      min_dim: 0.09
+      max_dim: 0.09
+      max_aspect: 1.01
+      density: 300.0
+      num_poses:  256
+      num_points:  512
+  task:
+    gamma: 0.995
+    sample_thresh: [1.0, 1.0]
+    margin_scale: 0.8
+  object_state_type: pose
+  hand_state_type: pose
+
+
+add_goal_thresh: false
+add_goal_full_cloud: false
+use_rel_goal: true
+use_tune_goal_radius: false
+
+normalizer:
+  norm:
+    constlist: []
+  obs_shape:
+    goal: [7]
+
+env_name: 'arm_div_cloud_v11_prim'

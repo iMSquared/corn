@@ -1,0 +1,31 @@
+# @package _global_
+defaults:
+  - hand_wall_pose
+
+add_prev_wrench: true
+add_object_mass: true
+
+use_tune_goal_angle: true
+tune_goal_angle:
+  _target_: pkm.env.env.wrap.adaptive_domain_tuner.MultiplyScalarAdaptiveDomainTuner.Config
+  step: 0.95
+  easy: 3.14
+  hard: 0.05
+
+env:
+  action_period : 1
+  single_object_scene:
+    diverse_object: false
+    # load bbox for keypoint-based reward
+    load_bbox: true
+    goal_type: 'random'
+  fe_gripper:
+    ctrl_mode: wrench
+  task:
+    succ_coef: 10.0
+    pot_coef: 0.1
+    hand_obj_pot_coef: 0.05
+    use_potential: true
+    use_keypoint: true
+    goal_type: 'random'
+env_name: 'hand_wall_pose_speaker_state'

@@ -1,0 +1,13 @@
+# @package _global_
+defaults:
+  - hand_wall_pose
+
+use_camera: true
+remove_img: true
+camera:
+  use_cloud: true
+  object_id: 2
+  cloud_size: 512
+  cloud_type: 'object'
+
+env_name: 'hand_wall_pose_cloud'

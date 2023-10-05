@@ -1,0 +1,76 @@
+# @package _global_
+# Full state + Mass, MLP
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/noop@net.state.feature.hand_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/noop@net.state.feature.previous_wrench
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/aggregator/noop@net.state.aggregator.state
+  - ../net/aggregator/noop@net.state.aggregator.hand_state
+  - ../net/aggregator/noop@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.previous_wrench
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  - ../net/state/mlp@net.state.state
+
+use_camera: false
+remove_state: false
+env:
+  which_scene: "single_object"
+  single_object_scene:
+    single_object: true
+    multi_object: false
+    randomize_init_pos: true
+    randomize_init_orn: true
+    use_dr_on_setup: true
+    use_wall: true
+  which_robot: 'franka'
+  # franka.ctrl_mode: 'CI'
+  # franka.target_type: 'rel'
+          
+  # franka.init_type: 'home'
+  # franka.rot_type: 'axis_angle'
+  num_env: 2048
+  dt: 0.02
+  task:
+    max_speed: 0.1
+    check_stable: true
+    fail_coef: 0.0
+    succ_coef: 5.0
+    pot_coef: 5.0
+    hand_obj_pot_coef: 2.5
+    time_coef: 0.002
+    timeout: 256
+# env_name: 'franka_wall'
+  
+agent:
+  train:
+    train_steps: 1000000
+    use_amp: false
+    loss:
+      k_bound: 0.0002
+      k_val: 2.0
+
+  accumulate_gradient: 1
+  tanh_xfm: false
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 1
+  bptt_burn_in: 0
+  bptt_stride: 1
+  
+net:
+  state:
+    fuser:
+      mlp:
+        use_bn: false
+        use_ln: true
+        act_cls: 'elu'
+    state:
+      use_bn: false
+      use_ln: true
+      act_cls: 'elu'
+
+use_tune_goal_speed: true
+use_tune_goal_radius: true
+# model_name: 'state_arm_mlp_v1'

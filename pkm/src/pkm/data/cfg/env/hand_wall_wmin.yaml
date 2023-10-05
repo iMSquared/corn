@@ -1,0 +1,6 @@
+# @package _global_
+defaults:
+  - hand_wall
+add_wrench_penalty: true
+wrench_penalty_coef: 0.0001
+env_name: 'hand_wall_wmin'

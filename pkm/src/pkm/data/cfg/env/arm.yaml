@@ -1,0 +1,30 @@
+# @package _global_
+env:
+  which_scene: "single_object"
+  single_object_scene:
+    diverse_object: false
+    randomize_init_pos: true
+    randomize_init_orn: true
+    use_dr_on_setup: true
+    use_wall: true
+    table_file: 'table-with-wall/table-with-wall.urdf'
+  franka:
+    ctrl_mode: 'cpos_n'
+    init_type: 'home'
+  num_env: 1024
+  dt: 0.02
+  task:
+    max_speed: 0.1
+    check_stable: true
+    fail_coef: 0.0
+    succ_coef: 5.0
+    pot_coef: 5.0
+    hand_obj_pot_coef: 2.5
+    time_coef: 0.002
+    timeout: 256
+    min_separation_scale: 1.1
+    use_cliff: false
+use_tune_goal_speed: true
+use_tune_goal_radius: true
+use_tabulate: false
+env_name: 'arm'

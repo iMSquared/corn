@@ -1,0 +1,37 @@
+# @package _global_
+
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/noop@net.state.feature.cube_state
+  - ../net/feature/noop@net.state.feature.hand_state
+  - ../net/feature/noop@net.state.feature.robot_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/noop@net.state.feature.object_mass
+  - ../net/feature/noop@net.state.feature.previous_wrench
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/feature/image_mae_ss@net.state.feature.depth
+  - ../net/feature/noop@net.state.feature.previous_wrench
+  - ../net/aggregator/noop@net.state.aggregator.state
+  - ../net/aggregator/noop@net.state.aggregator.cube_state
+  - ../net/aggregator/noop@net.state.aggregator.hand_state
+  - ../net/aggregator/noop@net.state.aggregator.robot_state
+  - ../net/aggregator/gru@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.object_mass
+  - ../net/aggregator/noop@net.state.aggregator.previous_wrench
+  - ../net/aggregator/noop@net.state.aggregator.depth
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  #- ../net/state/mlp@net.state.state
+  - ../net/feature/noop@net.state.feature.previous_wrench
+  - ../net/aggregator/noop@net.state.aggregator.previous_wrench
+
+use_camera: true
+img_size: 224
+remove_state: true
+env:
+  num_env: 128
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 1
+  bptt_burn_in: 0
+  bptt_stride: 1

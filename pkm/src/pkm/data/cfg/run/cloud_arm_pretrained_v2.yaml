@@ -1,0 +1,36 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_mlp_base
+  - ../net/feature/noop@net.state.feature.goal
+  - ../net/feature/point_patch_v5@net.state.feature.cloud
+
+net:
+  state:
+    feature:
+      cloud:
+        icp:
+          dim_in: [512, 3]  # cloud size
+          dim_out: 128
+          headers: []
+          num_query: 1
+          keys: 
+            goal: 7
+          encoder:
+            num_hidden_layers: 2
+          ckpt: '/tmp/docker/epoch-140.ckpt'
+        query_keys: ['goal', 'previous_action', 'robot_state', 'hand_state']
+        num_query: 4
+        ctx_dim: 48 # 7+20+14+3
+        emb_dim: 128
+        cat_query: True
+        dim_out: 1024
+        encoder_channel: 128
+    fuser:
+      keys: ['cloud']
+      mlp:
+        dim_hidden: [512]
+    state:
+      dim_hidden: []
+
+model_name: 'cloud_arm_pretrained_v2'

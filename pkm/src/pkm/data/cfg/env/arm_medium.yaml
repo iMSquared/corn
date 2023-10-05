@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - arm
+env:
+  single_object_scene:
+    randomize_init_pos: false
+    randomize_init_orn: false
+    init_type: 'easy'
+  franka:
+    init_type: 'easy'
+env_name: 'arm_medium'
+use_tune_init_pos: false
+use_tune_goal_speed: false
+use_tune_goal_radius: false

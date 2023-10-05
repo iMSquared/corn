@@ -1,0 +1,74 @@
+# @package _global_
+
+defaults:
+  - arm_div_cloud
+
+env:
+  num_env: 4096
+  franka:
+    base_height: table
+    obj_margin: 0.2
+    init_type: box_sample
+    regularize: energy
+  single_object_scene:
+    use_wall: false
+    load_convex: false
+    filter_dims: null
+    filter_pose_count: null
+    base_set: ['cuboid', 'cylinder', 'prism']
+    cuboid:
+      num_types: 100
+      min_dim: 0.1
+      max_dim: 0.2
+      max_aspect: 1.
+      density: 300.0
+      num_poses:  256
+      num_points:  512
+      thin_only: true
+    cylinder:
+      num_types: 100
+      min_dim: 0.1
+      max_dim: 0.2
+      max_aspect: 1.
+      density: 300.0
+      num_poses:  256
+      num_points:  512
+      thin_only: true
+    prism:
+      num_types: 100
+      min_dim: 0.1
+      max_dim: 0.2
+      max_aspect: 1.
+      density: 300.0
+      num_poses:  256
+      num_points:  512
+      thin_only: true
+  task:
+    gamma: 0.995
+    sample_thresh: [1.0, 1.0]
+    margin_scale: 0.8
+    regularize_coef: 0.0001
+    timeout: 300
+  object_state_type: pose_vel
+  hand_state_type: pose
+
+
+add_goal_thresh: false
+add_goal_full_cloud: false
+use_rel_goal: true
+use_tune_goal_radius: false
+add_object_mass: true
+
+use_camera: false
+normalize_img: false
+
+normalizer:
+  norm:
+    constlist: ['hand_state', 'cloud']
+    stats:
+      hand_state: [[ 0.0, 0.0, 0.55, 0.0, 0.0, 0.0, 0.0 ],[ 0.4, 0.4, 0.4, 1.0, 1.0, 1.0, 1.0 ]]
+      cloud: [[0.0, 0.0, 0.55 ],[ 0.4, 0.4, 0.4 ]]
+  obs_shape:
+    goal: [7]
+
+env_name: 'arm_div_cloud_v8_thin'

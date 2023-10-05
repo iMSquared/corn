@@ -1,0 +1,40 @@
+# @package _global_
+
+defaults:
+  - cloud_arm_mlp_base
+  - ../net/feature/noop@net.state.feature.goal
+  - ../net/feature/point_patch_v5@net.state.feature.cloud
+
+net:
+  state:
+    feature:
+      cloud:
+        icp:
+          dim_in: [512, 3]  # cloud size
+          dim_out: 128
+          headers: []
+          num_query: 1
+          keys: 
+            hand_state: 9
+          encoder:
+            num_hidden_layers: 2
+          ckpt: null
+          pre_ln_bias: True
+          freeze_encoder: false
+          encoder_channel: 128
+        query_keys: ['goal', 'previous_action', 'robot_state', 'phys_params']
+        num_query: 16
+        ctx_dim: 48 # 9+20+14+5
+        emb_dim: 128
+        cat_ctx: True
+        dim_out: 2096
+    fuser:
+      keys: ['cloud']
+      mlp:
+        dim_hidden: [512]
+    state:
+      dim_hidden: []
+
+
+
+model_name: 'icra_e2e'

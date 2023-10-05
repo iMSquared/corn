@@ -1,0 +1,19 @@
+# @package _global_
+
+defaults:
+  - image_mwm_pretrained_single_object_gru
+  - ../net/feature/noop@net.state.feature.cube_state
+
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1
+
+# net:
+#   state:
+#     feature:
+#       img:
+
+

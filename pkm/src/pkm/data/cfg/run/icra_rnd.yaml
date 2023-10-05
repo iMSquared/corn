@@ -1,0 +1,10 @@
+# @package _global_
+
+defaults:
+  - icra_ours
+
+icp_obs:
+  icp:
+    ckpt: null
+
+model_name: 'icra_rnd'

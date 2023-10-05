@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<robot name="table-with-wall-open" xmlns:xacro="http://ros.org/wiki/xacro">
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <mesh filename="table-with-wall-open.obj"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <!-- <mesh filename="table-with-wall-split.obj"/> -->
+                <mesh filename="table-with-wall-open-coacd.obj"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="35.0"/>
+            <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+            <inertia ixx="4.464" ixy="0.0" ixz="0.0" iyy="1.793" iyz="0.0" izz="4.489"/>
+        </inertial>
+    </link>
+</robot>

@@ -1,0 +1,16 @@
+# @package _global_
+defaults:
+  - hand_wall
+env:
+  single_object_scene:
+    goal_type: 'stable'
+    use_wall: true
+    table_file: 'table-with-wall/table-with-wall.urdf'
+  task:
+    # about 30 degrees
+    goal_angle: 0.1
+    use_cliff: false
+    use_pose_goal: true
+use_tune_goal_angle: true
+use_tabulate: false
+env_name: 'hand_wall_pose'

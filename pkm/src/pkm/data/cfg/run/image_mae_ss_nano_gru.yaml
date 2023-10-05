@@ -1,0 +1,7 @@
+# @package _global_
+
+defaults:
+  - image_mae_ss_gru
+  - ../net/feature/image_mae_ss_nano@net.state.feature.depth
+
+img_size: 56

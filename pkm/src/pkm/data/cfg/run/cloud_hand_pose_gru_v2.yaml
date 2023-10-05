@@ -1,0 +1,28 @@
+# @package _global_
+# Full state + Mass, GRU
+defaults:
+  - cloud_hand_pose_gru_base.yaml
+
+agent:
+  tanh_xfm: false
+  train:
+    loss:
+      k_bound: 0.02
+      k_val: 2.0
+      clip_value: true
+      max_dv: 0.2
+    rollout_size: 8
+    chunk_size: 1
+    epoch: 4
+
+net:
+  state:
+    fuser:
+      mlp:
+        dim_hidden: [512,256]
+        dim_out: 128
+    state:
+      dim_hidden: [128]
+      dim_out: 128
+
+model_name: 'cloud_hand_pose_gru_v2'

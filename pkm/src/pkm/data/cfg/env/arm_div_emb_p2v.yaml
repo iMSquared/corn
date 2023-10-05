@@ -1,0 +1,27 @@
+# @package _global_
+
+defaults:
+  - arm_div_base
+
+add_object_embedding: true
+env:
+  single_object_scene:
+    data_root: '/input/ACRONYM/urdf'
+    hull_root: '/input/ACRONYM/hull'
+    mesh_count: '/input/ACRONYM/mesh_count.json'
+    urdf_stats_file: '/input/ACRONYM/urdf_stats.json'
+    stable_poses_file: '/input/ACRONYM/stable_poses_filtered.pkl'
+    embeddings_file: '/input/ACRONYM/embed-p2v.pkl'
+    patch_center_file: '/input/ACRONYM/patch-p2v.pkl'
+    bbox_file: '/input/ACRONYM/bbox.pkl'
+    cloud_file: '/input/ACRONYM/cloud.pkl'
+    override_inertia: true
+    load_embedding: true
+
+normalizer:
+  norm:
+    constlist: []
+  obs_shape:
+    object_embedding: [384]
+
+env_name: 'arm_div_emb_p2v'

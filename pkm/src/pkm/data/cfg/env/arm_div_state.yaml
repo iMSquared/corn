@@ -1,0 +1,40 @@
+# @package _global_
+
+defaults:
+  - arm_div_base
+
+add_object_embedding: false
+add_object_full_cloud: false
+add_goal_full_cloud: false
+add_goal_thresh: true
+remove_state: false
+
+use_tune_goal_radius: true
+tune_goal_radius:
+  easy: 0.2
+  hard: 0.03
+
+env:
+  single_object_scene:
+    data_root: '/input/ACRONYM/rot/urdf'
+    hull_root: '/input/ACRONYM/rot/hull'
+    mesh_count: '/input/ACRONYM/mesh_count.json'
+    urdf_stats_file: '/input/ACRONYM/urdf_stats.json'
+    stable_poses_file: '/input/ACRONYM/rot/stable_poses_filtered.pkl'
+    embeddings_file: '/input/ACRONYM/rot/embed-v16.pkl'
+    patch_center_file: '/input/ACRONYM/rot/patch-v16.pkl'
+    bbox_file: '/input/ACRONYM/rot/bbox.pkl'
+    cloud_file: '/input/ACRONYM/rot/cloud.pkl'
+    override_inertia: true
+    load_embedding: false
+    load_cloud: false
+  task:
+    sample_thresh: [0.75, 1.25]
+
+normalizer:
+  norm:
+    constlist: []
+  obs_shape:
+    goal: [7]
+
+env_name: 'arm_div_state'

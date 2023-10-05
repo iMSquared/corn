@@ -1,0 +1,12 @@
+# @package _global_
+defaults:
+  - hand_wall_pose_full_cloud_pos_her
+
+add_success: true
+state_net_blocklist: ['object_state','touch','touch_count', 'success']
+env:
+  task:
+    pot_coef: 0.1
+    hand_obj_pot_coef: 0.05
+
+env_name: 'hand_wall_pose_full_cloud_pos_her_balanced'

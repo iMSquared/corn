@@ -1,0 +1,20 @@
+# @package _global_
+
+defaults:
+  - arm_div_cloud
+
+add_goal_full_cloud: false
+use_rel_goal: true
+
+normalizer:
+  norm:
+    constlist: []
+  obs_shape:
+    goal: [7]
+env:
+  franka:
+    obj_margin: 0.2
+  task:
+    margin_scale: 0.8
+
+env_name: 'arm_div_cloud_v1'

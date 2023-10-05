@@ -1,0 +1,42 @@
+# @package _global_
+
+defaults:
+  - arm_div_base
+
+add_object_embedding: false
+add_object_full_cloud: true
+add_goal_full_cloud: true
+add_goal_thresh: true
+remove_state: true
+
+use_tune_goal_radius: true
+tune_goal_radius:
+  easy: 0.2
+  hard: 0.03
+
+env:
+  single_object_scene:
+    base_set: ['acronym']
+    acronym:
+      data_path: '/input/ACRONYM/meta-v0'
+      meta_file: '/input/ACRONYM/meta-v0/metadata.json'
+      urdf_path: '/input/ACRONYM/meta-v0/urdf'
+      hull_path: '/input/ACRONYM/meta-v0/hull'
+      cloud_path: '/input/ACRONYM/meta-v0/cloud'
+      normal_path: '/input/ACRONYM/meta-v0/normal'
+      pose_path: '/input/ACRONYM/meta-v0/pose'
+      code_path: '/input/ACRONYM/meta-v0/code'
+    override_inertia: true
+    load_embedding: false
+    load_cloud: true
+  task:
+    sample_thresh: [0.75, 1.25]
+
+normalizer:
+  norm:
+    constlist: []
+  obs_shape:
+    cloud: [3]
+    goal: [3]
+
+env_name: 'arm_div_cloud'

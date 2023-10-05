@@ -1,0 +1,5 @@
+# @package _global_
+use_wandb: true
+path:
+  root: "/output"
+machine: "gcp"

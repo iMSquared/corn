@@ -1,0 +1,63 @@
+# @package _global_
+# Full state + Mass, MLP
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/cloud@net.state.feature.cloud
+  - ../net/feature/noop@net.state.feature.hand_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/noop@net.state.feature.previous_wrench
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/feature/noop@net.state.feature.object_mass
+  - ../net/feature/cross@net.state.feature.object_embedding
+  - ../net/feature/noop@net.state.feature.previous_action
+  - ../net/aggregator/noop@net.state.aggregator.state
+  - ../net/aggregator/noop@net.state.aggregator.cloud
+  - ../net/aggregator/noop@net.state.aggregator.hand_state
+  - ../net/aggregator/noop@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.previous_wrench
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  - ../net/aggregator/noop@net.state.aggregator.object_mass
+  - ../net/aggregator/noop@net.state.aggregator.object_embedding
+  - ../net/aggregator/noop@net.state.aggregator.previous_action
+  - ../net/state/mlp@net.state.state
+
+remove_state: false
+agent:
+  train:
+    train_steps: 1000000
+    use_amp: false
+    loss:
+      k_bound: 0.0002
+      k_val: 2.0
+
+  accumulate_gradient: 1
+  tanh_xfm: false
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 1
+  bptt_burn_in: 0
+  bptt_stride: 1
+net:
+  policy:
+    actor:
+      dim_hidden: [64]
+      use_bn: false
+      use_ln: true
+      act_cls: 'elu'
+    value:
+      use_bn: false
+      use_ln: true
+      act_cls: 'elu'
+      dim_hidden: [64]
+  state:
+    fuser:
+      mlp:
+        use_bn: false
+        use_ln: true
+        act_cls: 'elu'
+    state:
+      use_bn: false
+      use_ln: true
+      act_cls: 'elu'
+use_amp: false
+model_name: 'embed_hand_pose_mlp_base'

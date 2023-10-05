@@ -1,0 +1,27 @@
+# @package _global_
+# Full state + Mass, MLP
+
+defaults:
+  - embed_arm_mlp_base
+  - ../net/feature/pw_attn@net.state.feature.object_embedding
+
+net:
+  state:
+    feature:
+      object_embedding:
+        dim_in: [16, 256]
+        dim_out: 512
+        num_query: 1
+        ctx_dim: 67 # 7+13+13+20+14
+        emb_dim: 128
+        encoder:
+          num_hidden_layers: 2
+          layer:
+            hidden_size: 128
+        keys: ['goal', 'hand_state', 'object_state', 'previous_action', 'robot_state']
+    fuser:
+      keys: ['object_embedding']
+      mlp:
+        dim_hidden: []
+    state:
+      dim_hidden: []

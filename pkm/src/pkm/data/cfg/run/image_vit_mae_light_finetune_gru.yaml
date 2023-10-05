@@ -1,0 +1,15 @@
+# @package _global_
+
+defaults:
+  - image_vit_mae_light_finetune
+  - ../net/aggregator/gru@net.state.aggregator.img
+
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1
+
+env:
+  num_env: 256

@@ -1,0 +1,6 @@
+# @package _global_
+
+defaults:
+  - image_mwm_pretrained_multi_object_gru_cube
+  - ../net/feature/noop@net.state.feature.hand_state
+  - ../net/aggregator/noop@net.state.aggregator.hand_state

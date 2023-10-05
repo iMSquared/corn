@@ -1,0 +1,24 @@
+# @package _global_
+
+defaults:
+  - image_mwm_pretrained_single_object
+  - ../net/feature/image_vit_from_mae@net.state.feature.img
+
+img_size: 48
+net:
+  state:
+    feature:
+      img:
+        dim_in: [2, 48, 48]
+        dim_out: 128
+        ckpt: '/tmp/pkm/mae/run-108/ckpt/last.ckpt'
+        vit:
+          # Patchify
+          patch_size: 8
+          encoder_stride: 8
+
+          # Encoder
+          hidden_size: 128
+          intermediate_size: 128
+          num_attention_heads: 4
+          num_hidden_layers: 3

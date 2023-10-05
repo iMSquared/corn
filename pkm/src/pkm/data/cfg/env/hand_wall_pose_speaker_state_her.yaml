@@ -1,0 +1,14 @@
+# @package _global_
+
+defaults:
+  - hand_wall_pose_speaker_state
+
+add_touch_count: true
+add_success: true
+
+state_net_blocklist: ['touch','touch_count', 'success']
+
+agent:
+  use_her: true
+
+env_name: 'hand_wall_pose_speaker_state_her'

@@ -1,0 +1,22 @@
+# @package _global_
+
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/noop@net.state.feature.cube_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/aggregator/gru@net.state.aggregator.state
+  - ../net/aggregator/noop@net.state.aggregator.cube_state
+  - ../net/aggregator/noop@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.img
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  - ../net/state/mlp@net.state.state
+
+use_camera: false
+remove_state: false
+remove_velocity: true
+env:
+  num_env: 4096
+agent:
+  train:
+    train_steps: 100000

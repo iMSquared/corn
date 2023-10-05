@@ -1,0 +1,23 @@
+# @package _global_
+
+defaults:
+  - arm_pose_speaker_state
+
+env:
+  single_object_scene:
+    table_dims: [0.4, 0.5, 0.4]
+    table_file: 'table-with-wall/table-with-wall-small.urdf'
+    use_wall: true
+  franka:
+    ctrl_mode: 'osc'
+    track_object: true
+    obj_margin: 0.2
+    max_pos: 0.03
+    max_ori: 0.03
+    KP_pos: 300.0
+    KD_pos: 17.32
+    KP_ori: 600.0
+    KD_ori: 48.98
+
+
+env_name: 'arm_pose_speaker_state_small_table'

@@ -1,0 +1,10 @@
+# @package _global_
+defaults:
+  - hand_wall_pose_embs_pos_chair_mass_her
+add_success: true
+state_net_blocklist: ['object_state','touch','touch_count', 'success']
+env:
+  task:
+    pot_coef: 0.1
+
+env_name: 'hand_wall_pose_embs_pos_chair_mass_her_balanced'

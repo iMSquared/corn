@@ -1,0 +1,21 @@
+# @package _global_
+# Student encoder trained by RMA
+project: 'rma'
+noise_mag: 0.005
+noise_type: 'additive'
+student: 
+  shapes:
+    goal: 7
+    hand_state: 7
+    robot_state: 14
+    previous_action: 20
+  rnn_arch: 'gru'
+  max_delay_steps: 0
+  without_teacher: false
+  use_interim_goal: True
+  horizon: 8
+  pose_dim: 7
+train_step: 1000000
+save_step: 10000
+
+model_name: 'rma_gru_student_base'

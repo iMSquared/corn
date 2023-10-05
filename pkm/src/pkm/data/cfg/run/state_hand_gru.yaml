@@ -1,0 +1,36 @@
+# @package _global_
+#
+defaults:
+  - ../net/feature/noop@net.state.feature.state
+  - ../net/feature/noop@net.state.feature.hand_state
+  - ../net/feature/noop@net.state.feature.object_state
+  - ../net/feature/point@net.state.feature.goal
+  - ../net/aggregator/noop@net.state.aggregator.state
+  - ../net/aggregator/gru@net.state.aggregator.hand_state
+  - ../net/aggregator/gru@net.state.aggregator.object_state
+  - ../net/aggregator/noop@net.state.aggregator.goal
+  - ../net/state/mlp@net.state.state
+
+use_camera: false
+remove_state: false
+env:
+  which_scene: "single_object"
+  single_object_scene:
+    single_object: false
+    multi_object: true
+    randomize_init_pos: true
+    randomize_init_orn: true
+  fe_gripper:
+    randomize_init_pos: true
+    randomize_init_orn: true
+  num_env: 1024
+  dt: 0.02
+  task:
+    max_speed: 0.1
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1
+model_name: 'state_hand_gru'

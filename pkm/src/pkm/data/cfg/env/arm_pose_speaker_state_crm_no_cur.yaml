@@ -1,0 +1,54 @@
+# @package _global_
+add_prev_wrench: false
+add_object_mass: false
+env:
+  which_scene: "single_object"
+  single_object_scene:
+    diverse_object: false
+    randomize_init_pos: true
+    randomize_init_orn: true
+    use_dr_on_setup: false
+    table_dims: [0.4, 0.5, 0.4]
+    table_file: 'table-with-wall/table-with-wall-small.urdf'
+    use_wall: true
+    load_bbox: true    
+  franka:
+    ctrl_mode: 'cpos_n'
+    track_object: true
+    obj_margin: 0.2
+    max_pos: 0.06
+    max_ori: 0.1
+    KP_pos: 200.0
+    KD_pos: 17.32
+    KP_ori: 600.0
+    KD_ori: 48.98
+    accumulate: false
+  num_env: 1024
+  dt: 0.025
+  task:
+    max_speed: 0.1
+    check_stable: true
+    fail_coef: 0.0
+    succ_coef: 1000.0
+    pot_coef: 0.16
+    hand_obj_pot_coef: 0.03
+    time_coef: 0.0
+    timeout: 256
+    min_separation_scale: 1.1
+    use_cliff: false
+    use_keypoint: true
+    use_potential: false
+    sample_thresh: [0.75, 1.25]
+    goal_type: 'cuboid'
+    use_pose_goal: true
+    goal_angle: 0.3
+  action_period: 4
+use_tune_goal_speed: false
+use_tune_goal_radius: false
+use_tune_goal_angle: false
+use_tabulate: false
+agent:
+  train:
+    epoch: 4
+env_name: 'arm_pose_speaker_state_crm_no_cur'
+

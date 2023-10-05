@@ -1,0 +1,8 @@
+# @package _global_
+# Full state + Mass, MLP
+
+defaults:
+  - embed_arm_mlp_base
+  - ../net/feature/noop.yaml@net.state.feature.object_embedding
+
+name: "embed_arm_mlp_p2v_v5"

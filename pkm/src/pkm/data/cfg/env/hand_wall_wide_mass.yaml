@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - hand
+env:
+  single_object_scene:
+    use_wall: true
+    table_file: 'table-with-wall/table-with-wall.urdf'
+    use_mass_set: true
+    mass_set: [0.1, 1.0, 10.0]
+  task:
+    use_cliff: false
+  fe_gripper:
+    max_force: 200.0
+    max_torque: 5.0
+use_tabulate: true
+tabulate:
+  method: 'set'
+env_name: 'hand_wall_wide_mass'

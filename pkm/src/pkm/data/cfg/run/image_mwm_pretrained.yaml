@@ -1,0 +1,17 @@
+# @package _global_
+#
+defaults:
+  - image_mwm
+  - ../net/feature/image_mwm_pretrained@net.state.feature.img
+
+img_size: 64
+env:
+  single_object_scene:
+    multi_object: true
+    single_object: false
+
+net:
+  state:
+    feature:
+      img:
+        ckpt: '/tmp/pkm/mae/run-002/ckpt/last.ckpt'

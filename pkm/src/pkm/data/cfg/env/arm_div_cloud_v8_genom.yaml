@@ -1,0 +1,58 @@
+# @package _global_
+
+defaults:
+  - arm_div_cloud
+
+env:
+  num_env: 4096
+  franka:
+    base_height: table
+    obj_margin: 0.2
+    init_type: box_sample
+    regularize: energy
+    # max_pos: 0.02
+    # max_ori: 0.03
+  single_object_scene:
+    use_wall: false
+    load_convex: false
+    load_goal: true
+    filter_dims: null
+    filter_pose_count: null
+    base_set: ['scenario']
+    scenario:
+      data_path: '/input/genom-task'
+    filter_file: null
+    use_dr: false
+    use_dr_on_setup: false
+    min_mass: 0.1
+    max_mass: 0.5
+  task:
+    gamma: 0.995
+    sample_thresh: [1.0, 1.0]
+    margin_scale: 0.8
+    regularize_coef: 0.0001
+    timeout: 300
+    goal_type: sampled
+  object_state_type: pose_vel
+  hand_state_type: pose
+
+
+add_goal_thresh: false
+add_goal_full_cloud: false
+use_rel_goal: true
+use_tune_goal_radius: false
+add_object_mass: true
+
+use_camera: false
+normalize_img: false
+
+normalizer:
+  norm:
+    constlist: ['hand_state', 'cloud']
+    stats:
+      hand_state: [[ 0.0, 0.0, 0.55, 0.0, 0.0, 0.0, 0.0 ],[ 0.4, 0.4, 0.4, 1.0, 1.0, 1.0, 1.0 ]]
+      cloud: [[0.0, 0.0, 0.55 ],[ 0.4, 0.4, 0.4 ]]
+  obs_shape:
+    goal: [7]
+
+env_name: 'arm_div_cloud_v8_genom'

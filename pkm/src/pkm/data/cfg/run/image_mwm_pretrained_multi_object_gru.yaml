@@ -1,0 +1,19 @@
+# @package _global_
+
+defaults:
+  - image_mwm_pretrained_single_object
+  - ../net/aggregator/gru@net.state.aggregator.img
+
+env:
+  single_object_scene:
+    multi_object: true
+    single_object: false
+
+
+agent:
+  # This configures compute_state() to
+  # operate on each frame.
+  bptt_horizon: 4
+  bptt_burn_in: 0
+  bptt_stride: 1
+
