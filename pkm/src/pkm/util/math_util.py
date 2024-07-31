@@ -321,12 +321,16 @@ def quat_multiply(q1: th.Tensor, q2: th.Tensor,
         -x1 * x2 - y1 * y2 - z1 * z2 + w1 * w2], dim=-1)
     return out
 
+@th.jit.script
+def sinc(x:th.Tensor, eps:float=1e-9):
+    return th.where(th.abs(x)<eps, th.ones_like(x), th.sin(x)/x)
 
 @th.jit.script
 def quat_from_axa(x: th.Tensor, eps: float = 1e-9):
     angle = x.norm(p=2, dim=-1, keepdim=True).clamp(min=eps, max=None)
     theta = (0.5 * angle)
-    xyz = 0.5 * x * th.sinc(theta / np.pi)
+    # xyz = 0.5 * x * th.sinc(theta / np.pi)
+    xyz = 0.5 * x * sinc(theta)
     w = theta.cos()
     return th.cat([xyz, w], dim=-1)
 

@@ -4,7 +4,7 @@ defaults:
   - feature/pose@feature.object_state
     #  - feature/image@feature.img
   - feature/noop@feature.img
-  - feature/image_mwm@feature.img
+    # - feature/image_mwm@feature.img
     #- feature/image_mwm@feature.rgb
   - feature/point@feature.goal
   - feature/noop@feature.eef_state

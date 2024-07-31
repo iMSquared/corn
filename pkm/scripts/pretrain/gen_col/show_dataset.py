@@ -52,10 +52,7 @@ def print_stats():
 
 
 def main():
-    # with open('/tmp/col/238123.pkl', 'rb') as fp:
-    #     d = pickle.load(fp)
-    # for f in Path('/tmp/col6/').glob('*.pkl'):
-    for f in Path('/tmp/col-10').glob('*.pkl'):
+    for f in Path('/tmp/col-12-2048/').glob('*.pkl'):
         with open(f, 'rb') as fp:
             d = pickle.load(fp)
         object_pose = d['object_pose']
@@ -87,5 +84,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
-    print_radii()
+    # print_radii()
+    main()

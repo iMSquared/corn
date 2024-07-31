@@ -9,9 +9,12 @@ import torch.nn.functional as F
 from torch.nn import Sequential as Seq, Linear as Lin, ReLU, BatchNorm1d as BN
 import einops
 
-from torch_geometric.nn import (
-    PointConv, fps, radius, global_max_pool,
-    knn_interpolate)
+try:
+    from torch_geometric.nn import (
+        PointConv, fps, radius, global_max_pool,
+        knn_interpolate)
+except ImportError:
+    print('To run PointNet, please install torch_geometric.')
 
 from pkm.models.rl.net.base import FeatureBase
 

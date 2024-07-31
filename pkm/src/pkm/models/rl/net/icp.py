@@ -22,7 +22,6 @@ from pkm.train.ckpt import load_ckpt, last_ckpt
 from pkm.util.config import recursive_replace_map, ConfigBase
 
 from icecream import ic
-from pkm.models.vqvae.vq_v2 import VectorQuantize as VQ
 
 
 class ICPNet(nn.Module):
@@ -69,10 +68,6 @@ class ICPNet(nn.Module):
         ignore_zero: bool = False  # False?
 
         use_vq: bool = False
-        vq: VQ.Config = VQ.Config(
-            codebook_dim=16,
-            codebook_size=256
-        )
 
         train_last_ln: bool = True
         header_inputs: Optional[Dict[str, int]] = None
@@ -95,10 +90,6 @@ class ICPNet(nn.Module):
                 'layer.output.hidden_dropout_prob': p_drop,
                 'use_adapter': self.use_adapter,
             })
-
-            if self.use_vq:
-                self.vq.dim = self.encoder_channel
-                # self.vq.codebook_dim = self.encoder_channel
 
     def __init__(self, cfg: Config):
         super().__init__()
@@ -178,9 +169,7 @@ class ICPNet(nn.Module):
                     ic('activate')
                     headers[k].model.append(nn.Sigmoid())
         self.headers = nn.ModuleDict(headers)
-        self.vq = None
         if cfg.use_vq:
-            self.vq = VQ(cfg.vq)
             self.output_vq_loss = nn.Identity()  # for hooks
 
         self.layernorm = nn.LayerNorm(cfg.encoder.layer.hidden_size,
@@ -350,10 +339,7 @@ class ICPNet(nn.Module):
         # print('icp-z', z[0, ..., 1:, :])
 
         if cfg.use_vq:
-            z, _, vq_loss = self.vq(z)
-            self.output_vq_loss(vq_loss)
-            if aux is not None:
-                aux['vq_loss'] = vq_loss
+            raise ValueError('VQ deprecated')
 
         if len(cfg.headers) == 0:
             z = z.reshape(*s[:-2], -1,
@@ -494,58 +480,6 @@ def test_model():
     ic(new_model)
     y, emb = new_model(x, ctx)
     print(y, emb.shape)
-
-# def test_ignore_zero():
-#     device: str = 'cuda:1'
-#     model = PointMAEEncoder(recursive_replace_map(PointMAEEncoder.Config(),
-#                                                   {'layer.hidden_size': 96}))
-#     x = th.randn((1, 512, 3))
-#     group = get_group_module_v2('fps', 32)
-#     p, c = group(x, aux={})
-#     z = p - c[..., :, None, :]
-#     z = einops.rearrange(z, '... s p d -> ... s (p d)')
-#     model = model.to(device)
-#     z = z.to(device)
-#     out1, _, _ = model(z)
-#     out2, _, _ = model(z, output_attentions=True)
-#     delta = (out1 - out2)
-#     ic(delta.min(), delta.max(),
-#        delta.mean(), delta.std())
-
-
-def test_vq():
-    batch_size: int = 7
-    x = th.randn((batch_size, 512, 3),
-                 dtype=th.float32,
-                 device='cuda')
-    keys = {'a': 32, 'b': 16}
-    headers = ['collision']
-    ctx = {'a': th.randn((batch_size, 32),
-                         device='cuda'), 'b': th.randn((batch_size, 16),
-                                                       device='cuda')}
-    num_query: int = 1
-    cfg = ICPNet.Config(
-        dim_in=(512, 3),
-        dim_out=256,
-        keys=keys,
-        headers=headers,
-        use_vq=True
-    )
-    ic(cfg)
-    cfg.vq.dim = 128
-    cfg.vq.codebook_dim = 128
-    # OmegaConf.save(OmegaConf.structured(cfg),
-    #                '/tmp/docker/icp.yaml')
-    model = ICPNet(cfg).to('cuda')
-    ic(model)
-    # model.verbose()
-    y, emb = model(x, ctx)
-
-
-def main():
-    # test_load()
-    # test_model()
-    test_vq()
 
 
 if __name__ == '__main__':

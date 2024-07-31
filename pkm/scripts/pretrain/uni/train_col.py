@@ -42,7 +42,7 @@ class Config(WandbConfig, HfConfig, ConfigBase):
     project: Optional[str] = 'corn-/col'
     sync_tensorboard: bool = True
     save_code: bool = True
-    use_wandb: bool = True
+    use_wandb: bool = False
     # It's technically "optional", but required if
     # `use_wandb`=True.
     group: Optional[str] = None
@@ -51,7 +51,7 @@ class Config(WandbConfig, HfConfig, ConfigBase):
 
     # == huggingface ==
     hf_repo_id: str = F'corn/{project}'
-    use_hfhub: bool = True
+    use_hfhub: bool = False
 
     path: RunPath.Config = RunPath.Config(root=F'/tmp/{project}')
     process: Preprocess.Config = Preprocess.Config(

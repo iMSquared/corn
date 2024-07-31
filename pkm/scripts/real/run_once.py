@@ -3,6 +3,8 @@
 import subprocess
 from hydra_zen import (store, zen, hydrated_dataclass)
 import os
+from pkm.util.path import get_path
+
 
 def cleanup():
     subprocess.run(['pkill', '-f', 'from multiprocessing'])
@@ -11,7 +13,7 @@ def cleanup():
 @store(name="run_once")
 def _main(obj:str, thin:bool=False, april:bool=True, data:bool=True):
     # WHERE SHOULD BE THE WORKING DIRECTORY FOR THE SUBPROCESSES?
-    cwd = ('/home/user/workspace/corn/pkm/scripts/real')
+    cwd = str(get_path('../../../scripts/real'))
 
     # 1. SAMPLE GOAL
     cleanup()
@@ -26,7 +28,7 @@ def _main(obj:str, thin:bool=False, april:bool=True, data:bool=True):
     
     # 2. RUN POLICY
     cleanup()
-    cmd = ['python3', 'controller.py', '-ckpt', '/home/user/corn_runtime//dagger/', '-dagger',
+    cmd = ['python3', 'controller.py', '-ckpt', '/home/user/corn_runtime/dagger/', '-dagger',
                     '-obj', obj, '-april', str(int(april)) ]
     if thin:
         cmd.extend(['-thin'])

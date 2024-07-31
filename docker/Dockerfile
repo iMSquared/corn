@@ -154,7 +154,6 @@ RUN python3 -m pip install --upgrade \
     pybullet_rendering \
     pyrender \
     einops \
-    stable-baselines3 \
     opencv-python
 
 
@@ -166,12 +165,15 @@ RUN PY_VERSION_MINOR="$(python3 -c 'import sys; print(sys.version_info.minor)')"
     -f "https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py3${PY_VERSION_MINOR}_cu113_pyt1110/download.html" \
     pytorch3d
 
-# NOTE: pytorch-geometric, pytorch-points3d
+# NOTE: pytorch-points3d
 RUN python3 -m pip install --upgrade --no-index \
     -f 'https://data.pyg.org/whl/torch-1.11.0+cu113.html' \
     torch-scatter torch-sparse torch-cluster torch-spline-conv
-RUN python3 -m pip install --upgrade \
-    torch-geometric
+
+# pytorch-geometric should be installed separately after build docker
+# pytorch-geometric
+# RUN python3 -m pip install --upgrade \
+#     torch-geometric
 
 # NOTE: below lines require compilation, so
 # it does not work without `nvidia-container-runtime`.
@@ -194,11 +196,10 @@ RUN python3 -m pip install --upgrade \
 # Install yourdfpy for loading URDF files.
 RUN python3 -m pip install --upgrade \
     yourdfpy \
-    pysdf \
-    pyro-ppl 
-
-RUN python3 -m pip install --upgrade \
-    git+https://github.com/tatsy/torchmcubes.git
+    pysdf 
+# Not required for now
+# RUN python3 -m pip install --upgrade \
+#     git+https://github.com/tatsy/torchmcubes.git
 
 RUN python3 -m pip install --upgrade \
     hydra-core \
@@ -217,8 +218,8 @@ RUN python3 -m pip install --upgrade \
     graspnetAPI
 
 # # Extra package (MVP)
-# RUN python3 -m pip install --upgrade \
-#     git+https://github.com/ir413/mvp
+RUN python3 -m pip install --upgrade \
+    git+https://github.com/ir413/mvp
 
 # Upgrade Open3D for visualization
 RUN python3 -m pip install open3d --upgrade
@@ -234,11 +235,19 @@ RUN python3 -m pip install --upgrade \
     pyflakes \
     mypy \
     icecream \
-    torchviz
+    torchviz \
+    gdown
 
 # Install moviepy for video logging.
 RUN python3 -m pip install --upgrade \
     moviepy
+
+# Extra packages for training scripts
+RUN python3 -m pip install --upgrade numpy
+# For pretraining
+RUN python3 -m pip install git+https://github.com/katsura-jp/pytorch-cosine-annealing-with-warmup
+# For policy training
+RUN python3 -m pip install --upgrade opt_einsum coacd pymeshlab
 
 ENV NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=all
 

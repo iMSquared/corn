@@ -27,15 +27,20 @@ from pkm.real.multi_perception_async import MultiPerception
 from pkm.models.rl.env_normalizer import EnvNormalizer
 from pkm.models.rl.nets import PiNet
 
-from pkm.util.path import RunPath
+from pkm.util.path import RunPath, get_path
 from pkm.util.math_util import (
     quat_from_axa,
     matrix_from_quaternion,
     invert_transform
 )
+from pkm.models.rl.v6.ppo import (
+    STATE_KEY
+)
 
-sys.path.append("/home/user/workspace/corn/pkm/scripts/toy/push_ppo")
+TRAIN_PATH = get_path('../../../scripts/train')
+sys.path.append(TRAIN_PATH)
 from distill import StudentAgentRMA
+sys.path.pop(-1)
 
 from rt_cfg import RuntimeConfig
 from load_policy import (load_configs,
@@ -51,9 +56,6 @@ HACK_CLIP_STATE: bool = False
 
 
 from full_pcd_util import (load_full_pcd)
-from pkm.models.rl.v6.ppo import (
-    STATE_KEY
-)
 
 @torch.jit.script
 def quat_inverse(q: torch.Tensor) -> torch.Tensor:

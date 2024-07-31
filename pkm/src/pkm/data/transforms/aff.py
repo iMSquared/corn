@@ -43,6 +43,7 @@ def get_gripper_mesh(cat: bool = False,
     """ as chulls though """
     if urdf_path is None:
         urdf_path = get_path('assets/franka_description/robots/franka_panda.urdf')
+        print('urdf-path', urdf_path)
     urdf = URDF.load(urdf_path,
                      build_collision_scene_graph=True,
                      load_collision_meshes=True,
@@ -89,7 +90,8 @@ class CheckGripperCollisionV2():
         self.device = device
         hulls = get_gripper_mesh(cat=False,
                                  frame=frame)
-        urdf_path = '../../../src/pkm/data/assets/franka_description/robots/franka_panda.urdf'
+        urdf_path = get_path('assets/franka_description/robots/franka_panda.urdf')
+        print('urdf-path', urdf_path)
         urdf = URDF.load(urdf_path,
                          build_collision_scene_graph=True,
                          load_collision_meshes=True,

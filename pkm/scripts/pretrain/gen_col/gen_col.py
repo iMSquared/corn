@@ -5,26 +5,9 @@ import pickle
 from pathlib import Path
 from yourdfpy import URDF
 from functools import partial
-import torch as th
-
-from pkm.env.scene.dgn_object_set import DGNObjectSet
-from pkm.env.scene.acronym_object_set import AcronymObjectSet
-from pkm.env.scene.combine_object_set import CombinedObjectSet
-from pkm.env.scene.filter_object_set import FilteredObjectSet, dataset_hasattr
-
-import pytorch_volumetric as pv
 from tempfile import TemporaryDirectory
 from tqdm.auto import tqdm
-from pkm.util.path import ensure_directory
-from pkm.models.common import merge_shapes
-from pkm.util.math_util import (
-    apply_pose_tq,
-    invert_pose_tq,
-    compose_pose_tq,
-    quat_rotate,
-    matrix_from_pose
-)
-from pkm.util.torch_util import dcn
+import torch as th
 import copy
 import trimesh
 from icecream import ic
@@ -33,219 +16,24 @@ from matplotlib import pyplot as plt
 import torch.nn.functional as F
 import einops
 
+from pkm.env.scene.dgn_object_set import DGNObjectSet
+from pkm.env.scene.acronym_object_set import AcronymObjectSet
+from pkm.env.scene.combine_object_set import CombinedObjectSet
+from pkm.env.scene.filter_object_set import FilteredObjectSet, dataset_hasattr
+from pkm.models.common import merge_shapes
+from pkm.util.path import ensure_directory
+from pkm.util.math_util import (
+    apply_pose_tq,
+    invert_pose_tq,
+    compose_pose_tq,
+    quat_rotate,
+    matrix_from_pose
+)
+from pkm.util.torch_util import dcn
 from pkm.data.transforms.sdf.sdf_cvx_set_th3 import SignedDistanceTransform
-
 from pkm.data.transforms.sdf.sdf_cvx_set_th3 import IsInHulls
 from pkm.data.transforms.df_th3 import DistanceTransform
 from pkm.data.transforms.aff import CheckGripperCollisionV2
-
-
-class CheckGripperCollision():
-    """
-    Check if a given point collides with the gripper.
-    """
-
-    def __init__(self, device: Optional[str] = None):
-        self.device = device
-        urdf = URDF.load(
-            # '../../../src/pkm/data/assets/fe-gripper/robot.urdf',
-            '../../../src/pkm/data/assets/franka_description/robots/franka_panda.urdf',
-            build_collision_scene_graph=True,
-            load_collision_meshes=True,
-            force_collision_mesh=False)
-
-        cache_path = Path('~/.cache/pkm/gripper_sdf.pkl')
-        ensure_directory(cache_path.expanduser().parent)
-        # mesh = urdf.scene.dump(concatenate=True)
-        # mesh = urdf.scene.subscene('panda_hand').dump(
-        #     concatenate=True)
-        mesh = urdf.collision_scene.subscene('panda_hand').dump(
-            concatenate=True)
-        # trimesh.Scene([mesh, trimesh.creation.axis()]).show()
-        # mesh = urdf.collision_scene.dump(concatenate=True)
-
-        # with TemporaryDirectory() as tmpdir:
-        mesh_file: str = F'/tmp/gripper.obj'
-        mesh.export(mesh_file)
-        obj = pv.MeshObjectFactory(mesh_file,
-                                   plausible_suboptimality=1e-4)
-        sdf = pv.MeshSDF(obj)
-        # csdf = pv.CachedSDF('gripper',
-        #                    resolution=0.001,
-        #                    range_per_dim=obj.bounding_box(padding=0.1),
-        #                    gt_sdf=sdf,
-        #                    device=device,
-        #                    cache_path=str(cache_path),
-        #                    debug_check_sdf=True)
-        # query_range = np.array(obj.bounding_box(padding=0.1))
-        # query_range[0] = query_range[0].mean(axis=0,
-        #                                      keepdims=True)
-        # pv.draw_sdf_slice(sdf, query_range)
-        # plt.show()
-        # self.__cache(obj, sdf, resolution=0.001)
-
-        self.sdf = sdf
-        self.mesh = mesh
-
-    def __csdf(self, point: th.Tensor):
-        pass
-
-    def __cache(self, obj, sdf, resolution: float = 0.01):
-        box = obj.bounding_box(padding=0.0)
-        ptp = box[:, 1] - box[:, 0]
-        num = np.ceil(ptp / resolution).astype(np.int32)
-        xyz = box[:, 0] + resolution * np.stack(np.meshgrid(
-            np.arange(num[0]),
-            np.arange(num[1]),
-            np.arange(num[2]),
-            indexing='ij'), axis=-1)  # 264 405 339 3
-
-        self.res2 = (xyz[-1, -1, -1] - xyz[0, 0, 0]) / (num - 1)
-        # print(resolution)
-        # print(self.res2)
-        # print(xyz.reshape(-1, 3).min(axis=0),
-        #       xyz.reshape(-1, 3).max(axis=0))
-        d, g = sdf(th.as_tensor(xyz.reshape(-1, 3),
-                                dtype=th.float,
-                                device=self.device))  # 264 305 339
-        # N, N3
-
-        if True:
-            # dg = th.cat([d[...,None], g], dim=-1)
-            # dg = dg.view(*xyz.shape[:-1], 4)
-            # dg = einops.rearrange(dg, '... c -> c ...') # C/HWD
-            dg = th.cat([d[None], g.T], dim=0)
-            dg = dg.view(4, *xyz.shape[:-1])
-            # print('dg', dg.shape)
-
-            # dg = val.reshape(*xyz.shape[:-1], 4)
-            # gval = gval.reshape(*xyz.shape)
-            # xyzv = th.cat([xyz, val[...,None]], dim=-1)
-            # numel = np.prod(num-1)
-            # stride0 = dg.stride()
-            # dg_blocks = th.as_strided(dg,
-            #                          size=(
-            #                              # BLOCKS
-            #                              num[0] - 2, num[1] - 2, num[2] - 2,
-            #                              # CHANNELS
-            #                              4,
-            #                              # SUB_BLOCKS
-            #                              3, 3, 3),
-            #                          stride=(*stride0[1:], *stride0),
-            #                          storage_offset=0)
-            self.dg = dg  # 1,C,H,W,D
-            # self.dg_blocks = dg_blocks
-        else:
-            stride0 = d.stride()
-            d_blocks = th.as_strided(
-                d,
-                size=(
-                    num[0] - 2,
-                    num[1] - 2,
-                    num[2] - 2,
-                    3,
-                    3,
-                    3),
-                stride=(
-                    *stride0,
-                    *stride0),
-                storage_offset=0)
-            self.d_blocks = d_blocks
-        self.block_stride = th.as_tensor([(num[1] - 2) * (num[2] - 2),
-                                          (num[2] - 2),
-                                          1],
-                                         dtype=th.long,
-                                         device=self.device)
-
-        # self.dg_blocks = dg_blocks.view(-1,3,3,3,4)
-        self.cmin = th.as_tensor(xyz[0, 0, 0],
-                                 dtype=th.float,
-                                 device=self.device)
-        self.cmax = th.as_tensor(xyz[-1, -1, -1],
-                                 dtype=th.float,
-                                 device=self.device)
-        # print(self.cmin)
-        # print(self.cmax)
-        self.cptp = self.cmax - self.cmin
-        self.resolution = resolution
-
-        # self.__query_cache(
-        #     th.zeros((8, 3), device=self.device,
-        #              dtype=th.float))
-
-        # raise ValueError('stop')
-        # val = box[None, :, 0] + th.linspace(num[0])[:, None]
-        # center = 0.5 * (box[:, 0] + box[:, 1])
-        # # xyz  =
-        # coord = th.cartesian_prod(
-        #     th.arange(box[0, 0], box[0, 1]),
-        #     th.arange(box[1, 0], box[1, 1]),
-        #     th.arange(box[2, 0], box[2, 1]))
-
-    def __query_cache(self, points: th.Tensor):
-        # currently expects Nx3 inputs
-        # block_index = ((points - self.cmin + 0.5*self.resolution) / self.resolution).to(
-        #         dtype=th.long)
-        # print(block_index.shape, self.block_stride.shape)
-        # flat_index = (block_index * self.block_stride).sum(dim=-1)
-        # src_block = self.dg_blocks[block_index[...,0],
-        #                           block_index[...,1],
-        #                           block_index[...,2]] # Nx3x3x3
-        # print(src_block.shape)
-        # local_point = (points - self.cmin) % self.resolution
-        # offsets     = local_point # still (Nx3)
-        # return F.grid_sample(src_block, offsets[:,None,None,None])[...,0,0,0]
-        grid_dim = (th.as_tensor(
-            self.dg.shape[-3:],
-            dtype=points.dtype, device=points.device) - 1)
-        loc = (
-            (points - self.cmin).div_(self.resolution).mul_(
-                2 / grid_dim).sub_(1))  # 0 ~ n-1
-        # print(loc.min(dim=0), loc.max(dim=0))
-        loc = loc[:, None, None, None, :]
-
-        # s0, s1 = (0.0, 0.0, 0.0), np.subtract(self.dg.shape[-3:], 1)
-        # t0, t1 = (-1.0, -1.0, -1.0), (+1.0, +1.0, +1.0)
-        # t0 + (t1-t0) / (s1-s0) * x
-        # x = t0 + (x - s0) * (t1-t0)/(s1-s0)
-        # s0 = 0 so
-        # x' = (t0 + x * (t1-t0)/s1)
-        # x' = x*(t1-t0)/s1 + t0
-        #    = x*(2)/s1 -1
-
-        out = F.grid_sample(
-            # 1,4,H,W,D
-            self.dg[None].expand(points.shape[0], *self.dg.shape),
-            # N,3
-            # (points - self.cmin)[:,None,None,None,:],
-            loc,
-            align_corners=True,
-            # align_corners=False,
-            # mode='nearest'
-            mode='bilinear'
-        )
-        return out[..., 0, 0, 0]  # Xx4
-
-    def __call__(self, point: th.Tensor):
-        # disable cache.
-        return self.sdf(point)
-        mask = th.logical_and(
-            (point > self.cmin).all(dim=-1),
-            (point < self.cmax).all(dim=-1))
-        out = th.empty((*point.shape[:-1], 4),
-                       dtype=point.dtype,
-                       device=point.device)
-        # Fill
-        # print(out[mask].shape)
-        out[mask] = self.__query_cache(point[mask])
-        d, g = self.sdf(point[~mask])
-        # print('d', d.shape)
-        # print('g', g.shape)
-        # print(out.shape)
-        # print('mask', mask.shape)
-        out[~mask] = th.cat([d[..., None], g], dim=-1)
-        # out[~mask, ...,1:] = g
-        return out[..., 0], out[..., 1:], mask
 
 
 def sample_pose(size: Tuple[int, ...], bound: th.Tensor):
@@ -289,7 +77,7 @@ class ObjectSetDataset(th.utils.data.Dataset):
 
 def main():
     # Configure generation.
-    device: str = 'cuda:1'
+    device: str = 'cuda:0'
     batch_size: int = 64
     repeat: int = 40
     sigma: float = 0.05
@@ -319,7 +107,7 @@ def main():
             ))
         acr_object_set = AcronymObjectSet(AcronymObjectSet.Config(
             data_path='/input/ACRONYM/meta-v1/',
-            data_path='/input/ACRONYM/meta-v1/cloud-2048',
+            cloud_path='/input/ACRONYM/meta-v1/cloud-2048',
             ))
         all_object_set = CombinedObjectSet([dgn_object_set, acr_object_set])
         all_object_set = FilteredObjectSet(

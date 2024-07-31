@@ -21,14 +21,6 @@ from pkm.models.rl.net.base import (
     AggregatorBase, FeatureBase, FuserBase)
 
 from pkm.models.rl.net.mlp import (MLPFeatNet, MLPAggNet, MLPFuser)
-from pkm.models.rl.net.cnn import CNNFeatNet, StackedCNNFeatNet
-# NOTE: deprecated
-# from pkm.models.rl.net.vit_legacy import ViTFeatNet, StackedViTFeatNet
-from pkm.models.rl.net.vit_from_mae import ViTFeatNet as ViTMAEFeatNet
-from pkm.models.rl.net.vit_xyz import ViTXYZFeatNet
-from pkm.models.rl.net.vit_mwm import ViTMWMFeatNet
-from pkm.models.rl.net.vit_simsiam import ViTSSFeatNet
-from pkm.models.rl.net.point import PointFeatNet
 from pkm.models.rl.net.cross import CrossFeatNet
 from pkm.models.rl.net.sd_cross import StateDependentCrossFeatNet
 from pkm.models.rl.net.pw_attn import PatchWiseAttentionFeatNet
@@ -41,7 +33,6 @@ from pkm.models.rl.net.point_patch_v7 import PointPatchV7FeatNet
 from pkm.models.rl.net.point_patch_v8 import PointPatchV8FeatNet
 from pkm.models.rl.net.flatten import FlattenFeatNet
 from pkm.models.rl.net.flat_mlp import FlatMLPFeatNet
-from pkm.models.rl.net.pretrained_mvp import MvpFeatNet
 from pkm.models.rl.net.gru import (GRUAggNet,)
 from pkm.models.rl.net.no_op import (NoOpFeatNet, NoOpAggNet, CatFuser)
 
@@ -434,26 +425,6 @@ class MLPStateEncoder(GenericStateEncoder):
                 return FlatMLPFeatNet(c)
             if isinstance(c, MLPFeatNet.Config):
                 return MLPFeatNet(c)
-            if isinstance(c, CNNFeatNet.Config):
-                return CNNFeatNet(c)
-            if isinstance(c, StackedCNNFeatNet.Config):
-                return StackedCNNFeatNet(c)
-            # if isinstance(c, ViTFeatNet.Config):
-            #     return ViTFeatNet(c)
-            if isinstance(c, MvpFeatNet.Config):
-                return MvpFeatNet(c)
-            # if isinstance(c, StackedViTFeatNet.Config):
-            #     return StackedViTFeatNet(c)
-            if isinstance(c, ViTMAEFeatNet.Config):
-                return ViTMAEFeatNet(c)
-            if isinstance(c, ViTXYZFeatNet.Config):
-                return ViTXYZFeatNet(c)
-            if isinstance(c, ViTMWMFeatNet.Config):
-                return ViTMWMFeatNet(c)
-            if isinstance(c, ViTSSFeatNet.Config):
-                return ViTSSFeatNet(c)
-            if isinstance(c, PointFeatNet.Config):
-                return PointFeatNet(c)
             if isinstance(c, CrossFeatNet.Config):
                 return CrossFeatNet(c)
             if isinstance(c, StateDependentCrossFeatNet.Config):

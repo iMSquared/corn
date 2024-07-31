@@ -20,7 +20,7 @@ from pkm.models.rl.env_normalizer import EnvNormalizer
 from pkm.models.rl.generic_state_encoder import MLPStateEncoder
 
 import sys
-sys.path.append('/home/user/workspace/corn/pkm/scripts/toy/push_ppo/')
+sys.path.append('/home/user/workspace/corn/pkm/scripts/train/')
 from distill import StudentAgentRMA
 
 from pkm.train.ckpt import last_ckpt

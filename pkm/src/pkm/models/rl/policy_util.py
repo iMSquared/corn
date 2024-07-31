@@ -6,13 +6,10 @@ from numbers import Number
 
 import torch as th
 from torch import distributions as pyd
-from torch.distributions import (Normal, Independent, Categorical)
-from pyro.distributions import TransformedDistribution
+from torch.distributions import (Normal, Independent, Categorical, TransformedDistribution)
 from torch.distributions.transforms import TanhTransform
 
 import nvtx
-# from pkm.models.rl.v2.tanh_transform import tanh_transform
-
 from icecream import ic
 
 T = th.Tensor
