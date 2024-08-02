@@ -6,7 +6,7 @@ Korea Advanced Institute of Science and Technology (KAIST) Kim Jaechul Graduate 
 
 International Conference on Learning Representations (ICLR) 2024 ([OpenReview](https://openreview.net/forum?id=KTtEICH4TO))
 
-![https://www.youtube.com/watch?v=TQE-Wku_2sk](./thumb.gif)
+![https://www.youtube.com/watch?v=TQE-Wku_2sk](fig/thumb-compressed.gif)
 
 * [website](https://sites.google.com/view/contact-non-prehensile)
 * [video](https://www.youtube.com/watch?v=TQE-Wku_2sk)
