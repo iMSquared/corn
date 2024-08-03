@@ -130,8 +130,9 @@ If you find this codebase useful, consider citing:
 
 ```
 @inproceedings{cho2024corn,
-	title={CORN: Contact-based Object Representation for Nonprehensile Manipulation of General Unseen Objects},
-	author={Cho, Yoonyoung and Han, Junhyek and Cho, Yoontae and Kim, Beomjoon},
-	booktitle={International Conference on Learning Representations (ICLR)},
-	year={2024}
+  title={{CORN: Contact-based Object Representation for Nonprehensile Manipulation of General Unseen Objects}},
+  author={Cho, Yoonyoung and Han, Junhyek and Cho, Yoontae and Kim, Beomjoon},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2024}
+}
 ```
