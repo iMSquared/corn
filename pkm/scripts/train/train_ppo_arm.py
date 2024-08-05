@@ -303,7 +303,7 @@ class Config(WandbConfig, HfConfig, GroupConfig, ConfigBase):
 
     # == periodic validation configs ==
     sample_action: bool = False
-    eval_period: int = 16384
+    eval_period: int = -1
     eval_step: int = 256
     eval_num_env: int = 16
     eval_record: bool = True

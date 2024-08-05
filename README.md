@@ -112,7 +112,7 @@ In the below script, we load the following pretrained weights:
 * representation model: `imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920`
 
 ```bash
-PYTORCH_JIT=0 python3 show_ppo_arm.py +platform=debug +env=icra_base +run=icra_ours ++env.seed=56081 ++eval_period=-1 ++tag=policy ++global_device=cuda:0 ++path.root=/tmp/pkm/ppo-a ++icp_obs.icp.ckpt=imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920 ++load_ckpt=imm-unicorn/corn-public:dr-icra_base-icra_ours-ours-final-000042 ++env.num_env=1024 ++env.use_viewer=0 ++draw_debug_lines=0
+PYTORCH_JIT=0 python3 show_ppo_arm.py +platform=debug +env=icra_base +run=icra_ours ++env.seed=56081 ++tag=policy ++global_device=cuda:0 ++path.root=/tmp/pkm/ppo-a ++icp_obs.icp.ckpt=imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920 ++load_ckpt=imm-unicorn/corn-public:dr-icra_base-icra_ours-ours-final-000042 ++env.num_env=1024 ++env.use_viewer=0 ++draw_debug_lines=0
 ```
 Replace the corresponding references if you'd like to evaluate the policy with your own parameters.
 
