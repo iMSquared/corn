@@ -78,7 +78,7 @@ class ObjectSetDataset(th.utils.data.Dataset):
 def main():
     # Configure generation.
     device: str = 'cuda:0'
-    batch_size: int = 32
+    batch_size: int = 64
     repeat: int = 40
     sigma: float = 0.05
     delta: float = 0.03
@@ -139,140 +139,141 @@ def main():
     count: int = initial_count
     for repeat in tqdm(range(repeat)):
         for data in tqdm(loader):
-            obj_cloud = data['cloud'].to(
-                dtype=th.float,
-                device=device)
-            # obj_cloud = workspace[0] + th.rand((2048, 3),
-            #                                    device=device) * (workspace[1] - workspace[0])
-            # print(obj_cloud.min(dim=0))
-            # print(obj_cloud.max(dim=0))
+            with th.no_grad():
+                obj_cloud = data['cloud'].to(
+                    dtype=th.float,
+                    device=device)
+                # obj_cloud = workspace[0] + th.rand((2048, 3),
+                #                                    device=device) * (workspace[1] - workspace[0])
+                # print(obj_cloud.min(dim=0))
+                # print(obj_cloud.max(dim=0))
 
-            # Sample scene configuration.
-            hand_pose = sample_pose(
-                obj_cloud.shape[0],
-                workspace)  # world_from_hand
-            objt_pose = sample_pose(
-                obj_cloud.shape[0],
-                workspace)  # world_from_obj
+                # Sample scene configuration.
+                hand_pose = sample_pose(
+                    obj_cloud.shape[0],
+                    workspace)  # world_from_hand
+                objt_pose = sample_pose(
+                    obj_cloud.shape[0],
+                    workspace)  # world_from_obj
 
-            # objt_pose = hand_pose
-            hand_from_obj = compose_pose_tq(
-                invert_pose_tq(hand_pose),
-                objt_pose)
+                # objt_pose = hand_pose
+                hand_from_obj = compose_pose_tq(
+                    invert_pose_tq(hand_pose),
+                    objt_pose)
 
-            obj_cloud_wrt_hand = apply_pose_tq(
-                hand_from_obj[:, None, :],  # N,1,7
-                obj_cloud)
-            d, g = collision_fn(obj_cloud_wrt_hand)
-            i = th.argmin(d, dim=-1, keepdim=True)
-            d = th.take_along_dim(d, i, dim=-1).squeeze(dim=-1)
-            g = th.take_along_dim(g, i[..., None], dim=-2).squeeze(dim=-2)
-
-            # Gradient direction, in world frame
-            u = quat_rotate(hand_pose[..., 3:7], g)
-
-            # Move gripper near the surface of the object.
-            # We additionally apply a bit of offset to
-            # increase the proportion of patches' intersections.
-            # d_ = d
-            d_ = d + sigma * th.randn_like(d) + delta
-            # d_ = d + th.rand_like(d)
-            txn = -d_[..., None] * u
-            objt_pose[..., :3].add_(txn)
-
-            # Apply new transform and then recompute SDF values.
-            hand_from_obj = compose_pose_tq(
-                invert_pose_tq(hand_pose),
-                objt_pose)
-            obj_cloud_wrt_hand = apply_pose_tq(
-                hand_from_obj[:, None, :],  # N,1,7
-                obj_cloud)
-            d, g = collision_fn(obj_cloud_wrt_hand)
-
-            # Determine contact points.
-            contact_flag = (d <= 0)
-            # contact_flag = m
-            # print('contact_flag', contact_flag.shape)
-            # ic(th.mean(contact_flag.any(dim=-1).float()))
-
-            if True:
-                tmp = apply_pose_tq(
-                    objt_pose[:, None, :],  # N,1,7
+                obj_cloud_wrt_hand = apply_pose_tq(
+                    hand_from_obj[:, None, :],  # N,1,7
                     obj_cloud)
-                zmin = tmp[..., 2].min(dim=-1).values
-                target = table_dim[2] + 0.1 * th.rand(
-                    size=(obj_cloud.shape[0],),
-                    device=obj_cloud.device)
-                dz = target - zmin
-                objt_pose[..., 2] += dz
-                hand_pose[..., 2] += dz
+                d, g = collision_fn(obj_cloud_wrt_hand)
+                i = th.argmin(d, dim=-1, keepdim=True)
+                d = th.take_along_dim(d, i, dim=-1).squeeze(dim=-1)
+                g = th.take_along_dim(g, i[..., None], dim=-2).squeeze(dim=-2)
 
-            # EXPORT DATA.
-            if export_data:
-                def __export(count):
-                    objt_cloud = apply_pose_tq(objt_pose[..., None, :],
-                                               obj_cloud)
-                    p = dcn(hand_pose)
-                    o = dcn(objt_pose)
-                    c = dcn(objt_cloud)
-                    f = dcn(contact_flag)
-                    k = dcn(data['key'])
-                    s = dcn(data['scale'])
+                # Gradient direction, in world frame
+                u = quat_rotate(hand_pose[..., 3:7], g)
 
-                    for i in range(obj_cloud.shape[0]):
-                        with open(F'{out_dir}/{count:06d}.pkl', 'wb') as fp:
-                            pickle.dump({
-                                'key': k[i],
-                                'hand_pose': p[i],
-                                'object_pose': o[i],
-                                'object_cloud': c[i],
-                                'contact_flag': f[i],
-                                'rel_scale': s[i]
-                            }, fp)
-                        count += 1
-                    return count
-                count = __export(count)
+                # Move gripper near the surface of the object.
+                # We additionally apply a bit of offset to
+                # increase the proportion of patches' intersections.
+                # d_ = d
+                d_ = d + sigma * th.randn_like(d) + delta
+                # d_ = d + th.rand_like(d)
+                txn = -d_[..., None] * u
+                objt_pose[..., :3].add_(txn)
 
-            if show_result:
-                def __visualize():
-                    objt_matrix = matrix_from_pose(objt_pose[..., 0:3],
-                                                   objt_pose[..., 3:7])
-                    hand_matrix = matrix_from_pose(hand_pose[..., 0:3],
-                                                   hand_pose[..., 3:7])
-                    objt_cloud = apply_pose_tq(objt_pose[..., None, :],
-                                               obj_cloud)
+                # Apply new transform and then recompute SDF values.
+                hand_from_obj = compose_pose_tq(
+                    invert_pose_tq(hand_pose),
+                    objt_pose)
+                obj_cloud_wrt_hand = apply_pose_tq(
+                    hand_from_obj[:, None, :],  # N,1,7
+                    obj_cloud)
+                d, g = collision_fn(obj_cloud_wrt_hand)
 
-                    objt_matrix = dcn(objt_matrix)
-                    hand_matrix = dcn(hand_matrix)
-                    objt_cloud = dcn(objt_cloud)
-                    ctct_flag = dcn(contact_flag)
+                # Determine contact points.
+                contact_flag = (d <= 0)
+                # contact_flag = m
+                # print('contact_flag', contact_flag.shape)
+                # ic(th.mean(contact_flag.any(dim=-1).float()))
 
-                    for To, Th, Xo, Cf in zip(objt_matrix, hand_matrix,
-                                              objt_cloud, ctct_flag):
-                        hand_mesh = copy.deepcopy(collision_fn.mesh)
-                        hand_mesh.apply_transform(Th)
-                        objt_cloud = trimesh.PointCloud(Xo)
-                        objt_cloud.visual.vertex_colors = np.where(
-                            Cf[..., None], (255, 0, 0), (0, 0, 255))
+                if True:
+                    tmp = apply_pose_tq(
+                        objt_pose[:, None, :],  # N,1,7
+                        obj_cloud)
+                    zmin = tmp[..., 2].min(dim=-1).values
+                    target = table_dim[2] + 0.1 * th.rand(
+                        size=(obj_cloud.shape[0],),
+                        device=obj_cloud.device)
+                    dz = target - zmin
+                    objt_pose[..., 2] += dz
+                    hand_pose[..., 2] += dz
 
-                        hand_hull_mesh = copy.deepcopy(collision_fn.hull_mesh)
-                        hand_hull_mesh.apply_transform(Th)
-                        hand_hull_mesh.visual.vertex_colors = (0, 255, 0)
+                # EXPORT DATA.
+                if export_data:
+                    def __export(count):
+                        objt_cloud = apply_pose_tq(objt_pose[..., None, :],
+                                                obj_cloud)
+                        p = dcn(hand_pose)
+                        o = dcn(objt_pose)
+                        c = dcn(objt_cloud)
+                        f = dcn(contact_flag)
+                        k = dcn(data['key'])
+                        s = dcn(data['scale'])
 
-                        table_mesh = trimesh.creation.box((0.4, 0.5, 0.4))
-                        table_xfm = np.eye(4)
-                        table_xfm[2, 3] = +0.2
-                        table_mesh.apply_transform(table_xfm)
+                        for i in range(obj_cloud.shape[0]):
+                            with open(F'{out_dir}/{count:06d}.pkl', 'wb') as fp:
+                                pickle.dump({
+                                    'key': k[i],
+                                    'hand_pose': p[i],
+                                    'object_pose': o[i],
+                                    'object_cloud': c[i],
+                                    'contact_flag': f[i],
+                                    'rel_scale': s[i]
+                                }, fp)
+                            count += 1
+                        return count
+                    count = __export(count)
 
-                        trimesh.Scene([
-                            # hand_mesh,
-                            objt_cloud,
-                            hand_hull_mesh,
-                            trimesh.creation.axis(),
-                            table_mesh
-                        ]).show()
-                        # return
-                __visualize()
+                if show_result:
+                    def __visualize():
+                        objt_matrix = matrix_from_pose(objt_pose[..., 0:3],
+                                                    objt_pose[..., 3:7])
+                        hand_matrix = matrix_from_pose(hand_pose[..., 0:3],
+                                                    hand_pose[..., 3:7])
+                        objt_cloud = apply_pose_tq(objt_pose[..., None, :],
+                                                obj_cloud)
+
+                        objt_matrix = dcn(objt_matrix)
+                        hand_matrix = dcn(hand_matrix)
+                        objt_cloud = dcn(objt_cloud)
+                        ctct_flag = dcn(contact_flag)
+
+                        for To, Th, Xo, Cf in zip(objt_matrix, hand_matrix,
+                                                objt_cloud, ctct_flag):
+                            hand_mesh = copy.deepcopy(collision_fn.mesh)
+                            hand_mesh.apply_transform(Th)
+                            objt_cloud = trimesh.PointCloud(Xo)
+                            objt_cloud.visual.vertex_colors = np.where(
+                                Cf[..., None], (255, 0, 0), (0, 0, 255))
+
+                            hand_hull_mesh = copy.deepcopy(collision_fn.hull_mesh)
+                            hand_hull_mesh.apply_transform(Th)
+                            hand_hull_mesh.visual.vertex_colors = (0, 255, 0)
+
+                            table_mesh = trimesh.creation.box((0.4, 0.5, 0.4))
+                            table_xfm = np.eye(4)
+                            table_xfm[2, 3] = +0.2
+                            table_mesh.apply_transform(table_xfm)
+
+                            trimesh.Scene([
+                                # hand_mesh,
+                                objt_cloud,
+                                hand_hull_mesh,
+                                trimesh.creation.axis(),
+                                table_mesh
+                            ]).show()
+                            # return
+                    __visualize()
 
 
 if __name__ == '__main__':
