@@ -78,7 +78,7 @@ class ObjectSetDataset(th.utils.data.Dataset):
 def main():
     # Configure generation.
     device: str = 'cuda:0'
-    batch_size: int = 64
+    batch_size: int = 32
     repeat: int = 40
     sigma: float = 0.05
     delta: float = 0.03
@@ -90,6 +90,10 @@ def main():
     initial_count: int = 0
     export_data: bool = True
     show_result: bool = False
+
+    # Allow restarting from where the process crashed last time.
+    if Path(out_dir).is_dir():
+        initial_count = len(list(Path(out_dir).glob('*.pkl')))
 
     # Prepare dataset.
     if True:

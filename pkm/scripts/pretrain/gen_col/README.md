@@ -4,10 +4,13 @@ Before running the data generation pipeline, ensure the assets setup has been co
 
 ## Data Generation
 
-Inspect the content of [gen_col.py](./gen_col.py) if it meets the requirements of your system. For instance, by default we use cuda device 0 for data generation.
+Inspect the content of [gen_col.py](./gen_col.py) if it meets the requirements of your system.
+
+For instance, by default we use cuda device 0 for data generation, and use an NVIDIA A6000 GPU for data generation.
+Depending on your hardware, you may need to reduce the batch size (Line 81 in gen_col.py) and/or restart your hardware
+due to accumulation of torch memory cache (see [troubleshooting](#troubleshooting]).
 
 Afterward, run [gen_col.py](./gen_col.py) to generate pretraining data.
-
 By default, the pretraining data are stored in `/tmp/col-12-2048`.
 
 Alternatively, you may download and extract the pretraining data that we make available [here](https://huggingface.co/imm-unicorn/corn-public/blob/main/col-12-2048.tar.gz).

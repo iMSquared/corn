@@ -5,8 +5,9 @@
 ### Install Docker
 
 Install docker in your host system by following the instructions [here](https://docs.docker.com/engine/install/ubuntu/ ).
-
-Afterward, if you'd like to avoid `sudo docker ...`, then follow the post-install instructions [here](https://docs.docker.com/engine/install/linux-postinstall/).
+Afterward, follow the post-install instructions [here](https://docs.docker.com/engine/install/linux-postinstall/).
+This step is required to avoid using the `sudo` user during docker builds and runs, as we transfer the permissions
+of the host user to the docker user for display.
 
 Depending on your system, you may also need [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) and [Docker Buildkit](https://docs.docker.com/build/buildkit/).
 
