@@ -1,5 +1,11 @@
 # Policy Training
-
+## Quickstart
+You can see the behavior of pre-trained policy with
+```bash
+PYTORCH_JIT=0 python3 show_ppo_arm.py +platform=debug +env=icra_base +run=icra_ours ++env.seed=56081 ++eval_period=-1 ++tag=policy ++global_device=cuda:0 ++path.root=/tmp/pkm/ppo-a ++icp_obs.icp.ckpt=imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920 ++load_ckpt=imm-unicorn/corn-public:dr-icra_base-icra_ours-ours-final-000042 ++env.num_env=16
+```
+**Note**
+You may have to setup display following [Instruction](#extra-tips) for visualization.
 
 ## Policy Training
 
