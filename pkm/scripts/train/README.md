@@ -9,7 +9,7 @@ You may have to setup display following [Instruction](#extra-tips) for visualiza
 
 ## Policy Training
 
-Afterward, run the training script as follows:
+For policy training run the training script as follows:
 
 ```bash
 PYTORCH_JIT=0 python3 train_ppo_arm.py +platform=debug +env=icra_base +run=icra_ours ++env.seed=56081 ++eval_period=-1 ++tag=policy ++global_device=cuda:0 ++path.root=/tmp/pkm/ppo-a ++icp_obs.icp.ckpt="${CORN_CKPT}"
