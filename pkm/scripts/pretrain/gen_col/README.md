@@ -7,8 +7,7 @@ Before running the data generation pipeline, ensure the assets setup has been co
 Inspect the content of [gen_col.py](./gen_col.py) if it meets the requirements of your system.
 
 For instance, by default we use cuda device 0 for data generation, and use an NVIDIA A6000 GPU for data generation.
-Depending on your hardware, you may need to reduce the batch size (Line 81 in gen_col.py) and/or restart your hardware
-due to accumulation of torch memory cache (see [troubleshooting](#troubleshooting]).
+Depending on your hardware, you may need to restart your process to circumvent OOM issues arising from accumulation of torch memory cache.
 
 Afterward, run [gen_col.py](./gen_col.py) to generate pretraining data.
 By default, the pretraining data are stored in `/tmp/col-12-2048`.
