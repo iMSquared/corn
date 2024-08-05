@@ -1,21 +1,9 @@
-# Pretraining
+# Contact-based Object Representation Model
 
-## Data Generation
+We make pretrained checkpoints of our representation model available [here](https://huggingface.co/imm-unicorn/corn-public/blob/main/512-32-balanced-SAM-wd-5e-05-920).
 
-To generate pretraining data, see inside [gen_col](./gen_col) directory.
+However, if you'd like to generate your own data and/or train your own model,
+you can refer to the guidelines in the following subdirectories:
 
-Alternatively, we provide pre-generated data [here](https://huggingface.co/imm-unicorn/corn-public/blob/main/col-12-2048.tar.gz).
-
-To download and use the data, run the following inside the docker container:
-
-```bash
-cd /tmp/
-wget https://huggingface.co/imm-unicorn/corn-public/resolve/main/col-12-2048.tar.gz
-tar -xzf col-12-2048.tar.gz
-```
-
-## Training
-
-To pretrain the representation model, follow the instructions inside the [uni](./uni) directory.
-
-Alternatively, we provide pretrained checkpoints [here](https://huggingface.co/imm-unicorn/corn-public/blob/main/512-32-balanced-SAM-wd-5e-05-920).
+* To pretrain the representation model, follow the instructions inside the [uni](./uni) directory.
+* To generate pretraining data, see inside [gen_col](./gen_col) directory.
