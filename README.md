@@ -105,13 +105,37 @@ $ tree /input/DGN --filelimit 16 -d
 ```
 # Evaluate CORN
 
-Move to `pkm/scripts/train` and execute following command-line:
+Move to `pkm/scripts/train` and execute following command-line to reproduce the result with pre-trained weights:
+
+In the below script, we load the following pretrained weights:
+* policy: `imm-unicorn/corn-public:dr-icra_base-icra_ours-ours-final-000042`
+* representation model: `imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920`
 
 ```bash
 PYTORCH_JIT=0 python3 show_ppo_arm.py +platform=debug +env=icra_base +run=icra_ours ++env.seed=56081 ++eval_period=-1 ++tag=policy ++global_device=cuda:0 ++path.root=/tmp/pkm/ppo-a ++icp_obs.icp.ckpt=imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920 ++load_ckpt=imm-unicorn/corn-public:dr-icra_base-icra_ours-ours-final-000042 ++env.num_env=1024 ++env.use_viewer=0 ++draw_debug_lines=0
 ```
+Replace the corresponding references if you'd like to evaluate the policy with your own parameters.
 
-If you want to see the behavior of policy, adjust the number of parallel environment by changing `++env.num_env={num_env}` and turn on the gui with `++env.use_viewer=1 ++draw_debug_lines=1`
+Every 1024 steps, the evaluation/debugging metrics will be printed as follows, including the mean success rate (`env/suc_rate`) accumulated across all environments and episodes: 
+```bash
+rppo.test:  50%|███████████████████████████████████████████████████████████████████▎                                                                   | 1022/2048 [01:24<01:22, 12.37it/s]
+env/eplen=59.947265625
+env/return=-0.1169838085770607
+env/discounted_return=-0.0659918338060379
+env/num_interactions=1048576
+env/num_steps=1024
+env/num_episodes=15911
+env/num_success=14465
+env/suc_rate=0.9091194770913205
+env/cur_suc_rate=0.9091194770913205
+env/avg_episode_return=0.7900275588035583
+env/avg_reward=0.011987809091806412
+env/avg_episode_discounted_return=0.08089251071214676
+env/avg_true_return=0.49319836497306824
+```
+
+For _visualizing_ the behavior of the policy, running too many environments in parallel may cause significant lag in your system.
+Instead, adjust the number of parallel environment by changing `++env.num_env=${NUM_ENV}` and turn on the gui with `++env.use_viewer=1 ++draw_debug_lines=1`, and don't forget to export the `${DISPLAY}` variable to match the monitor settings from the host environment.
 
 For detailed setup or troubleshooting, please refer to [README](./pkm/scripts/train/README.md).
 
