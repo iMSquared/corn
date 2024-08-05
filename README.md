@@ -103,6 +103,17 @@ $ tree /input/DGN --filelimit 16 -d
     |-- unique_dgn_poses
     `-- urdf
 ```
+# Evaluate CORN
+
+Move to `pkm/scripts/train` and execute following command-line:
+
+```bash
+PYTORCH_JIT=0 python3 show_ppo_arm.py +platform=debug +env=icra_base +run=icra_ours ++env.seed=56081 ++eval_period=-1 ++tag=policy ++global_device=cuda:0 ++path.root=/tmp/pkm/ppo-a ++icp_obs.icp.ckpt=imm-unicorn/corn-public:512-32-balanced-SAM-wd-5e-05-920 ++load_ckpt=imm-unicorn/corn-public:dr-icra_base-icra_ours-ours-final-000042 ++env.num_env=1024 ++env.use_viewer=0 ++draw_debug_lines=0
+```
+
+If you want to see the behavior of policy, adjust number of parallel environment by changing `++env.num_env={num_env}` and turn on the gui with `++env.use_viewer=1 ++draw_debug_lines=1`
+
+For detailed setup, please refer [README](./pkm/scripts/train/README.md).
 
 # Pretraining
 
